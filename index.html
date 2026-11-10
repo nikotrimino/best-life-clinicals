@@ -259,7 +259,15 @@ a{color:inherit}
 .apply .lead ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.7rem}
 .apply .lead li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sun);margin-right:.8rem;vertical-align:middle}
 .mygoals{display:flex;flex-wrap:wrap;gap:.4rem;min-height:1.6rem}
-.mygoals span{font-size:.85rem;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.3rem .75rem}
+.mygoals span{font-size:.92rem;font-weight:500;background:var(--white);color:var(--deep);border-radius:999px;padding:.42rem .9rem}
+.mygoals span.empty{background:transparent;color:rgba(255,255,255,.55);font-weight:400;border:1px dashed rgba(255,255,255,.3)}
+.lead-bottom{display:flex;flex-direction:column;gap:1.2rem}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.perks div{border-left:1px solid rgba(255,255,255,.22);padding-left:1rem}
+.perks b{display:block;font-size:clamp(1.9rem,2.8vw,2.6rem);font-weight:600;letter-spacing:-.04em;line-height:1;color:var(--sun)}
+.perks span{display:block;margin-top:.45rem;font-size:.95rem;line-height:1.3;color:rgba(255,255,255,.78)}
+.goalbox{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1rem 1.1rem}
+.goalbox p{margin:0 0 .6rem!important;padding:0!important;font-size:.85rem;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.7);max-width:none}
 @media(max-width:900px){.apply{grid-template-columns:1fr}}
 .form{border-radius:24px;border:1px solid var(--line);padding:clamp(1.6rem,4vw,3.2rem);min-width:0}
 .prog{height:3px;border-radius:3px;background:var(--soft);overflow:hidden}
@@ -346,10 +354,9 @@ footer nav a{text-decoration:none;white-space:nowrap}
 
 /* Phone layout */
 @media(max-width:600px){
-  .hero{min-height:100svh;background:#15120f}
-  .hero .ph{bottom:auto;height:60%}
-  .hero .ph.has-photo{background-position:74% 30%}
-  .hero .shade{background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 16%,rgba(21,18,15,0) 34%,rgba(21,18,15,.9) 54%,#15120f 62%)}
+  .hero{min-height:90svh}
+  .hero .ph.has-photo{background-position:71% center}
+  .hero .shade{background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.25) 45%,rgba(0,0,0,.82) 100%)}
   .hero .wrap{padding-block:6rem 1.8rem}
   .hero h1{font-size:3.35rem;line-height:.95}
   .hero .sub{font-size:1.05rem;max-width:none}
@@ -394,8 +401,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
   .apply .lead{padding:1.6rem 1.4rem;gap:1.3rem;justify-content:flex-start;border-radius:20px}
   .apply .lead h2{font-size:2.1rem}
   .apply .lead p{margin-top:.7rem;font-size:1rem}
-  .apply .lead ul{gap:.45rem;font-size:.95rem}
-  .apply .lead .label{margin-bottom:.4rem!important}
+  .perks{gap:.7rem}.perks div{padding-left:.7rem}.perks b{font-size:1.7rem}.perks span{font-size:.82rem}
   .form{padding:1.4rem 1.1rem;border-radius:20px}
   .qq legend{font-size:1.6rem}
   .qq .hint{margin-bottom:1rem}
@@ -432,7 +438,6 @@ footer nav a{text-decoration:none;white-space:nowrap}
             <a class="btn light" href="#apply">Book your private consultation <span class="ar">→</span></a>
             <a class="btn ghost" href="#goals">What do you want back?</a>
           </div>
-          <small>Completely confidential.</small>
         </div>
       </div>
     </div>
@@ -595,11 +600,10 @@ footer nav a{text-decoration:none;white-space:nowrap}
           <h2>Your best life is one call away.</h2>
           <p>Answer a few quick questions. If you're a fit, you'll pick a time with a physician right away.</p>
         </div>
-        <div>
-          <p class="label" style="color:rgba(255,255,255,.6);margin-bottom:.6rem">Your goals</p>
-          <div class="mygoals" id="mygoals"><span>Pick below</span></div>
+        <div class="lead-bottom">
+          <div class="perks"><div><b>4</b><span>quick questions</span></div><div><b>Free</b><span>and fully confidential</span></div><div><b>Zero</b><span>obligation</span></div></div>
+          <div class="goalbox"><p>Your goals</p><div class="mygoals" id="mygoals"><span class="empty">Your picks show up here</span></div></div>
         </div>
-        <ul><li>4 quick questions</li><li>Free and completely confidential</li><li>No obligation</li></ul>
       </div>
 
       <form class="form" id="app" novalidate>
@@ -827,7 +831,7 @@ const v=id=>document.getElementById(id).value.trim();
 const chosen=()=>[...form.querySelectorAll('[name="goals"]:checked')].map(x=>x.value);
 function syncGoals(){
   const box=document.getElementById('mygoals'),g=chosen();
-  box.innerHTML=g.length?g.map(x=>`<span>${x}</span>`).join(''):'<span>Pick below</span>';
+  box.innerHTML=g.length?g.map(x=>`<span>${x}</span>`).join(''):'<span class="empty">Your picks show up here</span>';
 }
 goalOpts.addEventListener('change',syncGoals);
 const checks=[
