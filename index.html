@@ -343,6 +343,48 @@ footer nav a{text-decoration:none;white-space:nowrap}
 @media(max-width:760px){.stick{display:flex}}
 
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Phone layout */
+@media(max-width:600px){
+  .hero{min-height:100svh}
+  .hero .shade{background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.25) 45%,rgba(0,0,0,.82) 100%)}
+  .hero .wrap{padding-block:6rem 1.8rem}
+  .hero h1{font-size:3.35rem;line-height:.95}
+  .hero .sub{font-size:1.05rem;max-width:none}
+  .hero .bottom{gap:1.4rem;margin-top:1.4rem}
+  .hero .row{flex-direction:column;align-items:stretch;width:100%}
+  .hero .ctas{align-items:stretch}
+  .hero .row .btn{width:100%}
+  .strip ul{grid-template-columns:1fr 1fr;gap:1.4rem 1rem;padding:1.6rem 0}
+  .strip li{grid-template-columns:1fr;row-gap:.15rem;align-items:start}
+  .strip li i{grid-row:auto;width:38px;height:38px;margin-bottom:.55rem}
+  .strip li i svg{width:19px;height:19px}
+  .strip li b{font-size:1rem}
+  .strip li span{font-size:.82rem}
+  .trust{padding:1.7rem 1.25rem;border-radius:22px;gap:1.3rem}
+  .trust h2{font-size:2.3rem}
+  .trust .lead{font-size:1rem}
+  .trust ul{grid-template-columns:1fr 1fr;gap:8px}
+  .trust li{grid-template-columns:1fr;padding:.95rem .9rem;border-radius:14px}
+  .trust li i{grid-row:auto;width:30px;height:30px;margin-bottom:.6rem}
+  .trust li i svg{width:15px;height:15px}
+  .trust li b{font-size:.92rem;line-height:1.25;margin:0}
+  .trust li span{display:none}
+  .vs h3{font-size:1.4rem}
+  .vs-grid>div{font-size:.88rem;padding:.65rem 0}
+  .trust .btn.light{align-self:stretch}
+  .hope{align-items:flex-end;min-height:92svh}
+  .hope .ph.has-photo{background-position:72% 0%;background-size:auto 70%;background-repeat:no-repeat;background-color:#0b1a1f}
+  .hope .shade{background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.85) 100%)}
+  .hope .wrap{padding-block:2.4rem}
+  .hope h2{font-size:2.5rem}
+  .hope p{font-size:1.05rem;margin-top:1rem}
+  .hope .btn{margin-top:1.4rem}
+  .head h2{font-size:2.5rem}
+  .side{min-height:520px}
+  .side h2{font-size:1.9rem}
+  .close h2{font-size:2.6rem}
+}
 </style>
 
 <header class="nav" id="nav">
@@ -751,7 +793,8 @@ document.getElementById('pickCta').addEventListener('click',()=>{document.getEle
   const hero=document.querySelector('.hero'),apply=document.getElementById('apply');
   let pastHero=false,atForm=false;
   const set=()=>stick.classList.toggle('on',pastHero&&!atForm);
-  new IntersectionObserver(e=>{pastHero=!e[0].isIntersecting;nav.classList.toggle('solid',pastHero);set()},{rootMargin:'-80px 0px 0px 0px'}).observe(hero);
+  new IntersectionObserver(e=>{pastHero=!e[0].isIntersecting;set()},{rootMargin:'-80px 0px 0px 0px'}).observe(hero);
+  const solid=()=>nav.classList.toggle('solid',scrollY>60);addEventListener('scroll',solid,{passive:true});solid();
   new IntersectionObserver(e=>{atForm=e[0].isIntersecting;set()}).observe(apply);
 })();
 
