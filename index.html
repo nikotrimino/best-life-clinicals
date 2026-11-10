@@ -95,9 +95,24 @@ a{color:inherit}
 @media(max-width:820px){.hero .bottom{grid-template-columns:1fr}.hero .ctas{align-items:flex-start}.hero .row{justify-content:flex-start}}
 
 /* Credential strip */
-.strip{border-bottom:1px solid var(--line)}
-.strip .wrap{display:flex;justify-content:space-between;align-items:center;gap:1.2rem 2rem;flex-wrap:wrap;padding-block:2.4rem;font-size:1.02rem;color:var(--gray)}
-.strip b{color:var(--black);font-weight:500}
+.strip{background:var(--deep);color:var(--white);overflow:hidden;border-block:1px solid rgba(255,255,255,.08)}
+.tick{display:flex;width:max-content;animation:tick 42s linear infinite}
+.strip:hover .tick{animation-play-state:paused}
+.tick-row{display:flex;align-items:center;gap:clamp(1.4rem,3vw,2.6rem);padding:clamp(1.6rem,3vw,2.3rem) 0;padding-right:clamp(1.4rem,3vw,2.6rem);white-space:nowrap;font-size:clamp(1.15rem,2vw,1.6rem);font-weight:400;letter-spacing:-.02em;color:rgba(255,255,255,.78)}
+.tick-row b{color:var(--white);font-weight:600}
+.tick-row i{font-style:normal;color:var(--sun);font-size:.8em}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.tick{animation:none}.tick-row[aria-hidden]{display:none}.tick-row{white-space:normal;flex-wrap:wrap;justify-content:center;padding-inline:18px}}
+.trust .lead b{color:var(--white);font-weight:500}
+.vs{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:clamp(1.4rem,3vw,2.4rem)}
+.vs h3{margin:0 0 1.2rem;font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:600;letter-spacing:-.03em}
+.vs-grid>div{display:grid;grid-template-columns:.8fr 1.1fr 1.1fr;gap:1rem;padding:.95rem 0;border-top:1px solid rgba(255,255,255,.12);font-size:1rem;color:rgba(255,255,255,.55)}
+.vs-grid>div.vs-h{border-top:0;padding-top:0;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase}
+.vs-grid [role=rowheader]{color:rgba(255,255,255,.8)}
+.vs-grid .us{color:var(--white);font-weight:500}
+.vs-grid>div:not(.vs-h) .us::before{content:"✓";color:var(--sun);margin-right:.5rem;font-weight:700}
+.vs-grid>div.vs-h .us{color:var(--sun)}
+@media(max-width:640px){.vs-grid>div{grid-template-columns:1fr 1fr;gap:.3rem 1rem}.vs-grid [role=rowheader]{grid-column:1/-1;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,.6)}.vs-grid>div.vs-h span:first-child{display:none}}
 
 /* Goal picker */
 .sect{padding-block:clamp(4.5rem,10vw,8.5rem)}
@@ -342,15 +357,41 @@ footer nav a{text-decoration:none}
     </div>
   </section>
 
-  <div class="strip">
-    <div class="wrap">
-      <span>Led by <b>licensed physicians</b></span>
-      <span><b>Private</b> consultations</span>
-      <span><b>Physician-prescribed</b> peptides, hormones &amp; GLP-1s</span>
-      <span><b>Delivered</b> to your door</span>
-      <span><b>US</b> made, tested &amp; shipped</span>
-    </div>
+  <div class="strip" role="region" aria-label="Why Best Life Clinicals">
+    <div class="tick"><div class="tick-row"><span><b>US</b> made</span><i aria-hidden="true">✦</i><span><b>US</b> tested</span><i aria-hidden="true">✦</i><span><b>US</b> shipped</span><i aria-hidden="true">✦</i><span>Never <b>overseas</b></span><i aria-hidden="true">✦</i><span><b>Licensed</b> US pharmacies</span><i aria-hidden="true">✦</i><span>Led by <b>licensed physicians</b></span><i aria-hidden="true">✦</i><span>Prescribed <b>only for you</b></span><i aria-hidden="true">✦</i><span><b>Delivered</b> to your door</span><i aria-hidden="true">✦</i></div><div class="tick-row" aria-hidden="true"><span><b>US</b> made</span><i aria-hidden="true">✦</i><span><b>US</b> tested</span><i aria-hidden="true">✦</i><span><b>US</b> shipped</span><i aria-hidden="true">✦</i><span>Never <b>overseas</b></span><i aria-hidden="true">✦</i><span><b>Licensed</b> US pharmacies</span><i aria-hidden="true">✦</i><span>Led by <b>licensed physicians</b></span><i aria-hidden="true">✦</i><span>Prescribed <b>only for you</b></span><i aria-hidden="true">✦</i><span><b>Delivered</b> to your door</span><i aria-hidden="true">✦</i></div></div>
   </div>
+
+  <section id="trust" style="padding-top:clamp(3rem,7vw,6rem)">
+    <div class="wrap">
+      <div class="trust">
+        <div class="trust-top">
+          <div>
+            <p class="label" style="color:rgba(255,255,255,.65)">What sets us apart</p>
+            <h2 style="margin-top:.8rem">Physician-led. Pharmacy-grade. <span>Made in America.</span></h2>
+          </div>
+          <div class="stats">
+            <div><b>100%</b><span>US made &amp; tested</span></div>
+            <div><b>1:1</b><span>Physician-led care</span></div>
+            <div><b>Rx</b><span>Prescribed only for you</span></div>
+          </div>
+        </div>
+        <p class="lead">Every treatment is prescribed by a licensed physician, prepared by a licensed US pharmacy and shipped from inside the US. <b>Never overseas. Never research-grade. Never a mystery vial.</b></p>
+        <ul><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></i><b>Physician-led team</b><span>A licensed physician team oversees every plan, start to finish.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM6 7h12v14H6z"/><path d="M12 11v6M9 14h6"/></svg></i><b>Private pharmacy</b><span>Prepared for you by a licensed private compounding pharmacy.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4A1.5 1.5 0 0 0 20 19l-5-10V3"/><path d="M8 3h8M7 15h10"/></svg></i><b>GMP-certified lab</b><span>Made in a private, inspected laboratory held to GMP standards.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></i><b>US made &amp; tested</b><span>Made and tested in the United States.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></i><b>US based &amp; shipped</b><span>A US team, shipping discreetly from within the US.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 5-6"/></svg></i><b>Your labs, your plan</b><span>Dosing guided by your own labs, never one-size-fits-all.</span></li></ul>
+        <div class="vs">
+          <h3>Not all peptides are equal.</h3>
+          <div class="vs-grid" role="table" aria-label="Best Life Clinicals compared with online peptide sellers">
+            <div class="vs-h" role="row"><span role="columnheader"></span><span role="columnheader" class="us">Best Life Clinicals</span><span role="columnheader">Online peptide sellers</span></div>
+            <div role="row"><span role="rowheader">Where it's made</span><span class="us">Licensed US pharmacy</span><span>Often overseas, origin unknown</span></div>
+            <div role="row"><span role="rowheader">Who decides</span><span class="us">A licensed physician, 1:1</span><span>No one. Add to cart.</span></div>
+            <div role="row"><span role="rowheader">Quality</span><span class="us">Pharmacy-grade, tested in the US</span><span>"Research use only", purity unverified</span></div>
+            <div role="row"><span role="rowheader">Your plan</span><span class="us">Guided by your own labs</span><span>One-size-fits-all</span></div>
+            <div role="row"><span role="rowheader">Shipping</span><span class="us">Shipped from the US to your door</span><span>International, held at customs</span></div>
+          </div>
+        </div>
+        <a class="btn light" href="#apply">Book your consultation <span class="ar">→</span></a>
+      </div>
+    </div>
+  </section>
 
   <section class="sect" id="offer" style="padding-bottom:0">
     <div class="wrap">
@@ -430,27 +471,6 @@ footer nav a{text-decoration:none}
         <div><span class="n">1</span><h3>Tell us your goals</h3><p>A two-minute private application. Confidential, no obligation.</p></div>
         <div><span class="n">2</span><h3>Talk to a physician</h3><p>A private consultation about your health, your history and what you want back.</p></div>
         <div><span class="n">3</span><h3>Start your protocol</h3><p>Labs where needed, then peptides, hormones or GLP-1s prescribed for you, with ongoing check-ins.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="trust" style="padding-bottom:clamp(4.5rem,10vw,8.5rem)">
-    <div class="wrap">
-      <div class="trust">
-        <div class="trust-top">
-          <div>
-            <p class="label" style="color:rgba(255,255,255,.65)">Why you can trust us</p>
-            <h2 style="margin-top:.8rem">Physician-led. Pharmacy-grade. <span>Made in America.</span></h2>
-          </div>
-          <div class="stats">
-            <div><b>100%</b><span>US made &amp; tested</span></div>
-            <div><b>1:1</b><span>Physician-led care</span></div>
-            <div><b>Rx</b><span>Prescribed only for you</span></div>
-          </div>
-        </div>
-        <p class="lead">Every treatment is prescribed by a licensed physician and prepared by a private US pharmacy. Nothing generic, nothing overseas.</p>
-        <ul><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></i><b>Physician-led team</b><span>A licensed physician team oversees every plan, start to finish.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM6 7h12v14H6z"/><path d="M12 11v6M9 14h6"/></svg></i><b>Private pharmacy</b><span>Prepared for you by a licensed private compounding pharmacy.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4A1.5 1.5 0 0 0 20 19l-5-10V3"/><path d="M8 3h8M7 15h10"/></svg></i><b>GMP-certified lab</b><span>Made in a private, inspected laboratory held to GMP standards.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></i><b>US made &amp; tested</b><span>Made and tested in the United States.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></i><b>US based &amp; shipped</b><span>A US team, shipping discreetly from within the US.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 5-6"/></svg></i><b>Your labs, your plan</b><span>Dosing guided by your own labs, never one-size-fits-all.</span></li></ul>
-        <a class="btn light" href="#apply">Book your consultation <span class="ar">→</span></a>
       </div>
     </div>
   </section>
