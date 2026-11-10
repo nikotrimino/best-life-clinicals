@@ -346,12 +346,14 @@ footer nav a{text-decoration:none;white-space:nowrap}
 
 /* Phone layout */
 @media(max-width:600px){
-  .hero{min-height:100svh}
-  .hero .shade{background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.25) 45%,rgba(0,0,0,.82) 100%)}
+  .hero{min-height:100svh;background:#15120f}
+  .hero .ph{bottom:auto;height:60%}
+  .hero .ph.has-photo{background-position:74% 30%}
+  .hero .shade{background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 16%,rgba(21,18,15,0) 34%,rgba(21,18,15,.9) 54%,#15120f 62%)}
   .hero .wrap{padding-block:6rem 1.8rem}
   .hero h1{font-size:3.35rem;line-height:.95}
   .hero .sub{font-size:1.05rem;max-width:none}
-  .hero .bottom{gap:1.4rem;margin-top:1.4rem}
+  .hero .bottom{gap:1.3rem;margin-top:1rem}
   .hero .row{flex-direction:column;align-items:stretch;width:100%}
   .hero .ctas{align-items:stretch}
   .hero .row .btn{width:100%}
@@ -383,7 +385,22 @@ footer nav a{text-decoration:none;white-space:nowrap}
   .head h2{font-size:2.5rem}
   .side{min-height:520px}
   .side h2{font-size:1.9rem}
-  .close h2{font-size:2.6rem}
+  .close h2{font-size:3rem;max-width:none}
+  .close .rot.line .w{white-space:normal;max-width:92vw}
+  .close p{font-size:1.1rem;margin:1.2rem auto 1.8rem}
+  .faq summary{font-size:1.05rem;padding-block:1.1rem;gap:1rem}
+  .faq summary::after{font-size:1.35rem}
+  .apply{gap:10px}
+  .apply .lead{padding:1.6rem 1.4rem;gap:1.3rem;justify-content:flex-start;border-radius:20px}
+  .apply .lead h2{font-size:2.1rem}
+  .apply .lead p{margin-top:.7rem;font-size:1rem}
+  .apply .lead ul{gap:.45rem;font-size:.95rem}
+  .apply .lead .label{margin-bottom:.4rem!important}
+  .form{padding:1.4rem 1.1rem;border-radius:20px}
+  .qq legend{font-size:1.6rem}
+  .qq .hint{margin-bottom:1rem}
+  .opts{grid-template-columns:1fr 1fr;gap:.45rem}
+  .opt span{padding:.8rem .85rem;font-size:.92rem;line-height:1.25;border-radius:12px}
 }
 </style>
 
