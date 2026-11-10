@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Best Life Clinicals</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: photography is the design. Full-bleed image rooms carry the color and emotion; the interface around them is white, true black and one sun accent, almost invisible. */
+:root{
+  --white:#FFFFFF;
+  --black:#0A0A0A;
+  --soft:#F5F5F4;      /* quiet panels */
+  --gray:#6B6B6B;
+  --line:#E7E6E4;
+  --sun:#E8673A;       /* one accent, pulled from golden-hour light */
+  --deep:#0A0A0A;      /* the supporting color: buttons, dark panels, selections. Swappable for review. */
+  --sans:"Geist","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+/* Single committed light look; image rooms set their own white-on-photo type. */
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--black);font-family:var(--sans);font-size:1.02rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--deep)}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+@media(min-width:800px){.wrap{padding-left:max(44px,env(safe-area-inset-left,0px));padding-right:max(44px,env(safe-area-inset-right,0px))}}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.045em;line-height:.98;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+.label{font-size:.78rem;font-weight:500;letter-spacing:.02em;color:var(--gray)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;font:500 1rem/1 var(--sans);padding:1.15rem 1.8rem;border-radius:999px;background:var(--deep);color:var(--white);border:1px solid var(--deep);cursor:pointer;text-decoration:none;transition:transform .2s,opacity .2s}
+.btn:hover{transform:translateY(-1px);opacity:.9}
+.btn.light{background:var(--white);color:var(--black);border-color:var(--white)}
+.btn.ghost{background:transparent;color:var(--white);border-color:rgba(255,255,255,.5)}
+.btn.ghost:hover{border-color:var(--white)}
+.btn.out{background:transparent;color:var(--black);border-color:var(--line)}
+.ar{transition:transform .2s}
+.btn:hover .ar{transform:translateX(3px)}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+
+/* Photo slots. Each one is ready for a real photograph: set its URL in PHOTOS at the bottom of the file. Until then a graded stand-in holds the space. */
+.ph{position:relative;overflow:hidden;background-color:#2a2420;background-size:cover;background-position:center;max-width:100%}
+.ph[data-tone="sunrise"]{background-image:radial-gradient(70% 60% at 65% 35%,#f3b27a 0%,#c96a45 35%,#4a2a20 75%,#1a1210 100%)}
+.ph[data-tone="sea"]{background-image:radial-gradient(80% 60% at 40% 30%,#cfe0e4 0%,#7fa1ad 40%,#2c4650 80%,#121c21 100%)}
+.ph[data-tone="skin"]{background-image:radial-gradient(70% 70% at 45% 40%,#f2cdb6 0%,#d79a7c 45%,#7a4a38 85%,#2b1a14 100%)}
+.ph[data-tone="dusk"]{background-image:linear-gradient(170deg,#e9a77f 0%,#a5604a 40%,#3b2622 80%,#140e0d 100%)}
+.ph[data-tone="stone"]{background-image:radial-gradient(70% 70% at 50% 35%,#e8e1d8 0%,#b9ab9b 50%,#5b5047 100%)}
+.ph[data-tone="night"]{background-image:radial-gradient(70% 60% at 60% 30%,#5c6f7c 0%,#2a3640 50%,#0d1216 100%)}
+.ph::before{content:"";position:absolute;inset:0;opacity:.18;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.ph.has-photo::before{display:none}
+.ph .brief{position:absolute;right:1rem;top:1rem;z-index:2;font-size:.66rem;letter-spacing:.06em;color:rgba(255,255,255,.62);background:rgba(0,0,0,.28);padding:.35rem .6rem;border-radius:999px;max-width:calc(100% - 2rem);backdrop-filter:blur(6px)}
+.ph.has-photo .brief{display:none}
+.hero .brief,.hope .brief,.close .brief{top:auto;bottom:1rem}
+.hero .brief{bottom:auto;top:calc(5.2rem + env(safe-area-inset-top,0px))}
+
+/* Nav over the hero */
+.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;color:var(--white);transition:background .35s,color .35s,box-shadow .35s}
+.nav.solid{background:rgba(255,255,255,.92);color:var(--black);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1rem}
+.logo{font-weight:600;font-size:1.25rem;letter-spacing:-.04em;text-decoration:none;white-space:nowrap}
+.logo span{font-weight:400;opacity:.62}
+/* Rotating word: its own line, every word stacked in one cell so nothing reflows; words crossfade softly */
+.rot{display:inline-grid;justify-items:start;color:var(--sun);transition:width .9s cubic-bezier(.45,0,.2,1)}
+.rot .w{grid-area:1/1;white-space:nowrap;opacity:0;filter:blur(8px);transition:opacity .9s ease,filter .9s ease}
+.rot .w.on{opacity:1;filter:blur(0)}
+.rot.line{display:grid;margin-inline:auto;justify-items:center}
+.rot.plain{color:inherit}
+.nav nav{display:flex;gap:1.8rem;font-size:.95rem}
+.nav nav a{text-decoration:none;opacity:.78}
+.nav nav a:hover{opacity:1}
+.nav .btn{padding:.8rem 1.25rem;font-size:.92rem;background:var(--white);color:var(--black);border-color:var(--white)}
+.nav.solid .btn{background:var(--deep);color:var(--white);border-color:var(--deep)}
+.nav .sm{display:none}
+@media(max-width:940px){.nav nav{display:none}}
+@media(max-width:480px){.nav .lg{display:none}.nav .sm{display:inline}}
+
+/* Hero */
+.hero{position:relative;min-height:min(100svh,980px);display:flex;align-items:flex-end;color:var(--white)}
+.hero .ph{position:absolute;inset:0}
+.hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.72) 100%)}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-block:8rem clamp(2.5rem,6vw,4.5rem)}
+.hero h1{font-size:clamp(2.3rem,9vw,8.6rem);max-width:none;text-wrap:wrap}
+.close h2{text-wrap:wrap}
+.hero .bottom{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;margin-top:2rem}
+.hero .sub{font-size:clamp(1.1rem,1.6vw,1.35rem);max-width:36ch;color:rgba(255,255,255,.88);line-height:1.45}
+.hero .sub b{font-weight:500;color:var(--white)}
+.hero .ctas{display:flex;flex-direction:column;align-items:flex-end;gap:.7rem}
+.hero .ctas small{font-size:.82rem;color:rgba(255,255,255,.72)}
+.hero .row{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:820px){.hero .bottom{grid-template-columns:1fr}.hero .ctas{align-items:flex-start}.hero .row{justify-content:flex-start}}
+
+/* Credential strip */
+.strip{border-bottom:1px solid var(--line)}
+.strip .wrap{display:flex;justify-content:space-between;align-items:center;gap:1.2rem 2rem;flex-wrap:wrap;padding-block:2.4rem;font-size:1.02rem;color:var(--gray)}
+.strip b{color:var(--black);font-weight:500}
+
+/* Goal picker */
+.sect{padding-block:clamp(4.5rem,10vw,8.5rem)}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem 3rem;flex-wrap:wrap;margin-bottom:clamp(2rem,4vw,3rem)}
+.head h2{font-size:clamp(2.8rem,6.4vw,5.8rem);max-width:12ch}
+.head p{max-width:36ch;color:var(--gray);font-size:1.08rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.4rem}
+.chips button{font:500 .98rem var(--sans);border:1px solid var(--line);background:var(--white);color:var(--black);padding:.8rem 1.15rem;border-radius:999px;cursor:pointer;transition:all .2s}
+.chips button:hover{border-color:var(--deep)}
+.chips button[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:var(--white)}
+.picked{display:grid;grid-template-columns:1.15fr .85fr;border-radius:28px;overflow:hidden;min-height:clamp(480px,46vw,640px);background:var(--deep);color:var(--white)}
+.picked .ph{min-height:320px}
+.picked .ph.has-photo{background-position:center top}
+.picked .ph.has-photo[data-goal="weight"]{background-position:center 38%}
+.picked .ph.has-photo[data-goal="desireM"]{background-position:center 75%}
+.picked .txt{padding:clamp(2rem,5vw,4.2rem);display:flex;flex-direction:column;justify-content:space-between;gap:2rem}
+.picked .tag{font-size:.82rem;color:rgba(255,255,255,.6)}
+.picked h3{font-size:clamp(2.4rem,4.6vw,4.4rem);margin-top:1rem}
+.picked p{font-size:1.15rem;color:rgba(255,255,255,.78);max-width:30ch;margin-top:1.2rem;line-height:1.45}
+.picked .fade{transition:opacity .35s}
+.picked .fade.out{opacity:0}
+@media(max-width:860px){.picked{grid-template-columns:1fr}}
+
+/* Hope beat */
+.hope{position:relative;color:var(--white);min-height:clamp(560px,70vw,860px);display:flex;align-items:center}
+.hope .ph{position:absolute;inset:0}
+.hope .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.25) 60%,rgba(0,0,0,0) 100%)}
+.hope .wrap{position:relative;z-index:2;width:100%}
+.hope h2{font-size:clamp(2.8rem,6.6vw,6.2rem);max-width:13ch}
+.hope h2 span{display:block;color:var(--sun)}
+.hope p{margin-top:1.8rem;font-size:1.2rem;max-width:34ch;color:rgba(255,255,255,.85)}
+.hope .btn{margin-top:2.2rem}
+
+/* Men / Women */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.side{text-decoration:none;position:relative;border-radius:24px;overflow:hidden;min-height:clamp(560px,64vw,820px);display:flex;align-items:flex-end;color:var(--white)}
+.side .ph{position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.side:hover .ph{transform:scale(1.03)}
+.side .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.8) 100%)}
+.side .in{position:relative;z-index:2;padding:clamp(1.6rem,4vw,3rem);width:100%}
+.side h2{font-size:clamp(2.6rem,5vw,4.6rem)}
+.side ul{list-style:none;padding:0;margin:1.4rem 0 1.8rem;display:flex;flex-wrap:wrap;gap:.45rem}
+.side li{font-size:.9rem;padding:.45rem .85rem;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+@media(max-width:820px){.duo{grid-template-columns:1fr}}
+/* Keep faces in frame on wide screens: anchor photos toward the top, not the middle */
+.hero .ph.has-photo{background-position:center 22%}
+.hope .ph.has-photo{background-position:center 20%}
+.side .ph.has-photo{background-position:center 10%}
+.side .ph[data-slot="women"].has-photo{background-position:center top}
+.side{min-height:clamp(560px,52vw,1000px)}
+
+/* How */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.how div{background:var(--soft);border-radius:24px;padding:clamp(1.6rem,3vw,2.4rem);display:flex;flex-direction:column;gap:.9rem;min-height:300px;min-width:0}
+.how .n{width:42px;height:42px;border-radius:50%;background:var(--deep);color:var(--white);display:grid;place-items:center;font-weight:500}
+.how h3{font-size:1.9rem;margin-top:auto}
+.how p{color:var(--gray)}
+/* What we offer */
+.offer{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.offer a{background:var(--deep);border-radius:24px;padding:clamp(1.6rem,3vw,2.4rem);display:flex;flex-direction:column;gap:.7rem;min-height:250px;min-width:0;text-decoration:none;color:var(--white);transition:transform .3s,filter .3s}
+.offer a:hover{transform:translateY(-4px);filter:brightness(1.15)}
+.offer .tag{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.65)}
+.offer h3{font-size:clamp(1.7rem,2.4vw,2.1rem);margin-top:auto}
+.offer p{color:rgba(255,255,255,.75)}
+.offer .go{font-weight:500;font-size:.95rem;display:flex;gap:.4rem;align-items:center}
+.offer a.feat{background:var(--deep);color:var(--white);box-shadow:inset 0 0 0 2px var(--sun)}
+.offer a.feat .tag,.offer a.feat p{color:rgba(255,255,255,.72)}
+/* Trust */
+.trust{position:relative;overflow:hidden;background:var(--deep);color:var(--white);border-radius:28px;padding:clamp(2rem,5vw,5rem);display:flex;flex-direction:column;gap:clamp(1.6rem,3vw,2.4rem)}
+.trust::before{content:"";position:absolute;width:70%;aspect-ratio:1;right:-20%;top:-45%;background:radial-gradient(closest-side,rgba(232,103,58,.38),transparent);pointer-events:none}
+.trust>*{position:relative}
+.trust-top{display:grid;grid-template-columns:1.8fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:end}
+.trust h2{font-size:clamp(2.6rem,5vw,4.9rem);line-height:.98}
+.trust h2 span{display:block;color:var(--sun)}
+.trust .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.trust .stats div{border-left:1px solid rgba(255,255,255,.22);padding-left:1rem}
+.trust .stats b{display:block;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:600;letter-spacing:-.04em;line-height:1}
+.trust .stats span{display:block;margin-top:.5rem;font-size:.9rem;color:rgba(255,255,255,.72)}
+.trust .lead{color:rgba(255,255,255,.8);max-width:52ch;font-size:1.15rem}
+.trust ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.trust li{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:1.6rem;transition:transform .3s,background .3s}
+.trust li:hover{transform:translateY(-4px);background:rgba(255,255,255,.12)}
+.trust li i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--sun);color:var(--white);margin-bottom:1.1rem}
+.trust li i svg{width:22px;height:22px}
+.trust li b{display:block;font-size:1.25rem;font-weight:500;letter-spacing:-.01em;margin-bottom:.35rem}
+.trust li span{color:rgba(255,255,255,.72);font-size:.95rem}
+.trust .btn.light{align-self:flex-start;background:var(--white);color:var(--black);border-color:var(--white)}
+@media(max-width:900px){.offer{grid-template-columns:1fr 1fr}.trust-top{grid-template-columns:1fr}.trust ul{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.trust .stats b{font-size:1.9rem}.trust .stats span{font-size:.8rem}.trust .stats div{padding-left:.7rem}.offer,.trust ul{grid-template-columns:1fr}.offer a{min-height:0}}
+@media(max-width:820px){.how{grid-template-columns:1fr}.how div{min-height:0}.how h3{margin-top:.6rem}}
+
+/* Doctor */
+.doc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.doc .ph{border-radius:24px;min-height:clamp(460px,48vw,700px)}
+.doc .ph.has-photo{background-position:center 30%}
+.doc .txt{border-radius:24px;background:var(--soft);padding:clamp(2rem,5vw,4.5rem);display:flex;flex-direction:column;justify-content:center;gap:1.5rem}
+.doc h2{font-size:clamp(2.6rem,5vw,4.6rem)}
+.creds{display:flex;gap:.45rem;flex-wrap:wrap}
+.creds span{background:var(--white);border-radius:999px;padding:.45rem .9rem;font-weight:500;font-size:.88rem}
+.doc .q{font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.35;letter-spacing:-.02em;font-weight:400}
+.doc p.mut{color:var(--gray);max-width:44ch}
+@media(max-width:820px){.doc{grid-template-columns:1fr}}
+
+/* Concierge */
+.conc{position:relative;border-radius:28px;overflow:hidden;color:var(--white);min-height:clamp(560px,52vw,720px);display:flex;align-items:center}
+.conc .ph{position:absolute;inset:0}
+.conc .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.72) 75%)}
+.conc .card{position:relative;z-index:2;margin-left:auto;width:min(500px,100%);padding:clamp(2rem,5vw,4rem);display:flex;flex-direction:column;gap:1.3rem}
+.conc .label{color:rgba(255,255,255,.65)}
+.conc h2{font-size:clamp(2.6rem,4.8vw,4.4rem)}
+.conc .price{font-size:clamp(2.4rem,4vw,3.4rem);font-weight:600;letter-spacing:-.04em}
+.conc .price small{font-size:1rem;font-weight:400;color:rgba(255,255,255,.7);letter-spacing:0;margin-left:.3rem}
+.conc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.55rem;color:rgba(255,255,255,.85)}
+.conc li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sun);margin-right:.8rem;vertical-align:middle}
+@media(max-width:700px){.conc .shade{background:linear-gradient(180deg,rgba(0,0,0,.1) 20%,rgba(0,0,0,.8) 70%)}.conc{align-items:flex-end}}
+
+/* Application */
+.apply{display:grid;grid-template-columns:.9fr 1.1fr;gap:12px}
+.apply .lead{border-radius:24px;background:var(--deep);color:var(--white);padding:clamp(2rem,5vw,4rem);display:flex;flex-direction:column;justify-content:space-between;gap:2rem}
+.apply .lead h2{font-size:clamp(2.6rem,5vw,4.6rem)}
+.apply .lead p{color:rgba(255,255,255,.72);margin-top:1.2rem;max-width:32ch;font-size:1.08rem}
+.apply .lead ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.7rem}
+.apply .lead li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sun);margin-right:.8rem;vertical-align:middle}
+.mygoals{display:flex;flex-wrap:wrap;gap:.4rem;min-height:1.6rem}
+.mygoals span{font-size:.85rem;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.3rem .75rem}
+@media(max-width:900px){.apply{grid-template-columns:1fr}}
+.form{border-radius:24px;border:1px solid var(--line);padding:clamp(1.6rem,4vw,3.2rem);min-width:0}
+.prog{height:3px;border-radius:3px;background:var(--soft);overflow:hidden}
+.prog i{display:block;height:100%;width:20%;background:var(--deep);transition:width .4s}
+.stepn{font-size:.85rem;color:var(--gray);margin:.8rem 0 1.8rem}
+.qq{border:0;margin:0;padding:0;min-width:0}
+.qq legend{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:600;letter-spacing:-.04em;line-height:1.05;padding:0;margin-bottom:.5rem}
+.qq .hint{color:var(--gray);margin-bottom:1.5rem}
+.sub{margin:1.5rem 0 .65rem;font-weight:500;font-size:.95rem}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:.5rem}
+.opt{position:relative;display:block}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;width:100%;height:100%;cursor:pointer}
+.opt span{display:flex;align-items:center;min-height:100%;border:1px solid var(--line);border-radius:14px;padding:.95rem 1.05rem;font-weight:500;transition:all .2s}
+.opt:hover span{border-color:var(--deep)}
+.opt input:checked+span{background:var(--deep);border-color:var(--deep);color:var(--white)}
+.opt input:focus-visible+span{outline:2px solid var(--sun);outline-offset:2px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.fields .full{grid-column:1/-1}
+@media(max-width:560px){.fields{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:.4rem;font-weight:500;font-size:.88rem}
+label.f input,label.f select{font:400 1rem/1.4 var(--sans);color:var(--black);background:var(--soft);border:1px solid transparent;border-radius:12px;padding:.9rem 1rem}
+label.f input:focus,label.f select:focus{outline:none;border-color:var(--deep);background:var(--white)}
+.consent{display:flex;gap:.7rem;align-items:flex-start;font-size:.85rem;color:var(--gray);margin-top:1.3rem}
+.consent input{margin-top:.25rem;accent-color:var(--deep)}
+.err{color:#B3361F;font-size:.9rem;margin-top:1rem;min-height:1.4em}
+.navrow{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem}
+.back{background:none;border:0;font:500 .95rem var(--sans);color:var(--gray);cursor:pointer;padding:.6rem 0}
+.back:hover{color:var(--black)}
+.done h3{font-size:clamp(2.2rem,4vw,3.4rem);margin:.8rem 0 1rem}
+.done p{color:var(--gray);max-width:44ch}
+.done .goals-echo{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem}
+.done .goals-echo span{font-size:.88rem;background:var(--soft);border-radius:999px;padding:.4rem .8rem}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:1.4rem}
+.slots button{font:500 .92rem var(--sans);border:1px solid var(--line);background:var(--white);border-radius:12px;padding:.85rem .5rem;cursor:pointer}
+.slots button:hover{border-color:var(--deep)}
+.slots button[aria-pressed="true"]{background:var(--deep);color:var(--white);border-color:var(--deep)}
+.demo{margin-top:1.6rem;font-size:.8rem;color:var(--gray);border-top:1px dashed var(--line);padding-top:1rem}
+
+/* FAQ + close */
+.faq{max-width:920px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;padding-block:1.4rem;font-weight:500;font-size:1.25rem;letter-spacing:-.02em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-weight:300;font-size:1.6rem;transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{color:var(--gray);padding-bottom:1.4rem;max-width:62ch}
+.close{position:relative;color:var(--white);min-height:clamp(560px,64vw,820px);display:flex;align-items:center;text-align:center}
+.close .ph{position:absolute;inset:0}
+.close .shade{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.42)}
+.close .wrap{position:relative;z-index:2;width:100%}
+.close h2{font-size:clamp(3rem,8.4vw,8rem);max-width:12ch;margin:0 auto}
+.close p{margin:1.6rem auto 2.2rem;font-size:1.15rem;color:rgba(255,255,255,.85)}
+footer{padding-block:2.6rem 6rem;font-size:.85rem;color:var(--gray)}
+footer .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:start}
+footer p{max-width:70ch}
+footer nav{display:flex;gap:1.4rem}
+footer nav a{text-decoration:none}
+@media(max-width:860px){footer .wrap{grid-template-columns:1fr;gap:1.2rem}}
+
+:root[data-palette="oxblood"]{--deep:#4A1519}
+:root[data-palette="ocean"]{--deep:#0E3A40}
+.picked,.apply .lead{transition:background .4s}
+
+/* Review-only color switcher */
+.swatch{position:fixed;z-index:36;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:999px;padding:.4rem .45rem .4rem .9rem;box-shadow:0 10px 30px -12px rgba(0,0,0,.3);font-size:.8rem}
+.swatch span{color:var(--gray);margin-right:.2rem}
+.swatch button{display:flex;align-items:center;gap:.45rem;font:500 .82rem var(--sans);border:1px solid transparent;background:transparent;border-radius:999px;padding:.4rem .7rem .4rem .45rem;cursor:pointer;color:var(--black)}
+.swatch .sep{margin-left:.5rem;padding-left:.7rem;border-left:1px solid var(--line)}
+@media(max-width:760px){.swatch{flex-wrap:wrap;justify-content:center}.swatch span.sep{display:inline;margin-left:0}}
+.swatch button[data-woman]{padding:.4rem .75rem}
+@media(max-width:760px){.hero .ph.has-photo{background-position:62% center}.hope .ph.has-photo{background-position:74% center}}
+.swatch button i{width:16px;height:16px;border-radius:50%;display:block}
+.swatch button[aria-pressed="true"]{border-color:var(--line);background:var(--soft)}
+@media(max-width:760px){.swatch{bottom:auto;top:calc(70px + env(safe-area-inset-top,0px));font-size:.75rem}.swatch span{display:none}.hero .brief{top:calc(8.4rem + env(safe-area-inset-top,0px))}.close h2{font-size:2.2rem}.conc .brief{display:none}}
+
+/* Sticky mobile booking bar */
+.stick{position:fixed;left:0;right:0;bottom:0;z-index:35;display:none;gap:.5rem;padding:.65rem max(12px,env(safe-area-inset-right,0px)) calc(.65rem + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);transition:transform .35s}
+.stick.on{transform:none}
+.stick .btn{flex:1;padding:1rem}
+.stick .btn.out{flex:0 0 auto}
+@media(max-width:760px){.stick{display:flex}}
+
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">Best Life <span>Clinicals</span></a>
+    <nav aria-label="Primary">
+      <a href="#offer">What we offer</a>
+      <a href="#goals">Your goals</a>
+      <a href="#men-women">Men &amp; women</a>
+      <a href="#how">How it works</a>
+      <a href="#doctor">Physicians</a>
+      <a href="#concierge">Concierge</a>
+    </nav>
+    <a class="btn" href="#apply"><span class="lg">Book your consultation</span><span class="sm">Book</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="ph" data-slot="hero" data-tone="sunrise"><span class="brief">Photo: couple, 50s, golden hour, terrace or ocean, alive and laughing</span></div>
+    <div class="shade"></div>
+    <div class="wrap">
+      <h1 aria-label="Get your best life back.">Get your best<br><span class="rot" id="heroRot" aria-hidden="true"></span> back.</h1>
+      <div class="bottom">
+        <p class="sub"><b>The energy. The body. The desire. The confidence.</b> Private peptide, hormone and GLP-1 care, built around your goals by licensed physicians.</p>
+        <div class="ctas">
+          <div class="row">
+            <a class="btn light" href="#apply">Book your private consultation <span class="ar">→</span></a>
+            <a class="btn ghost" href="#goals">What do you want back?</a>
+          </div>
+          <small>Completely confidential.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap">
+      <span>Led by <b>licensed physicians</b></span>
+      <span><b>Private</b> consultations</span>
+      <span><b>Physician-prescribed</b> peptides, hormones &amp; GLP-1s</span>
+      <span><b>Delivered</b> to your door</span>
+      <span><b>US</b> made, tested &amp; shipped</span>
+    </div>
+  </div>
+
+  <section class="sect" id="offer" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="head"><h2>What we offer.</h2><p>Physician-prescribed treatments and programs, all under one roof and one physician-led team.</p></div>
+      <div class="offer">
+        <a href="#apply"><span class="tag">Recovery · Body · Longevity</span><h3>Peptides</h3><p>Targeted peptides for muscle, fat loss, recovery, skin and sleep.</p><span class="go">Ask about peptides <span class="ar">→</span></span></a>
+        <a href="#apply"><span class="tag">Weight</span><h3>GLP-1s</h3><p>Medical weight loss that quiets cravings and keeps the weight off.</p><span class="go">Ask about GLP-1s <span class="ar">→</span></span></a>
+        <a href="#apply"><span class="tag">Men &amp; women</span><h3>Hormones</h3><p>Testosterone, bioidentical hormones and menopause care, balanced to your labs.</p><span class="go">Ask about hormones <span class="ar">→</span></span></a>
+        <a href="#apply"><span class="tag">Private</span><h3>Sexual wellness</h3><p>Desire, drive and performance, handled with total discretion.</p><span class="go">Ask privately <span class="ar">→</span></span></a>
+        <a href="#apply"><span class="tag">Daily support</span><h3>Supplements</h3><p>Physician-selected formulas to support your protocol every day.</p><span class="go">Ask about supplements <span class="ar">→</span></span></a>
+        <a class="feat" href="#" data-colleen><span class="tag">Wellness</span><h3>Programs &amp; protocols</h3><p>Wellness programs and protocols, from single protocols to the full Gut Reset.</p><span class="go">Explore programs <span class="ar">→</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect" id="goals">
+    <div class="wrap">
+      <div class="head">
+        <h2>What do you want back?</h2>
+        <p>Pick a goal. Your plan starts there, built around you by your physician.</p>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Choose your goal"></div>
+      <div class="picked">
+        <div class="ph fade" id="pickPh" data-slot="goal" data-tone="skin"><span class="brief" id="pickBrief"></span></div>
+        <div class="txt">
+          <div class="fade" id="pickTxt">
+            <p class="tag" id="pickTag"></p>
+            <h3 id="pickH"></h3>
+            <p id="pickP"></p>
+          </div>
+          <div><a class="btn light" href="#apply" id="pickCta">Start <span class="ar">→</span></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hope">
+    <div class="ph" data-slot="hope" data-tone="sea"><span class="brief">Photo: woman, late 40s, emerging from the sea, strong and free</span></div>
+    <div class="shade"></div>
+    <div class="wrap">
+      <h2>It's not "just getting older." <span>Your best is still coming.</span></h2>
+      <p>You don't have to settle for less than you had. Most of what you feel has a cause, and your physician finds yours.</p>
+      <a class="btn light" href="#apply">Start getting it back <span class="ar">→</span></a>
+    </div>
+  </section>
+
+  <section id="men-women" style="padding-top:clamp(3rem,7vw,6rem)">
+    <div class="wrap"><div class="head" style="margin-bottom:1.6rem"><h2>Made for you.</h2><p>Men and women want different things back. Your plan is built for yours.</p></div></div>
+    <div class="duo">
+      <a class="side" href="#apply" data-sex="s-m">
+        <div class="ph" data-slot="men" data-tone="dusk"><span class="brief">Photo: man, 50s, training outdoors at dawn, powerful</span></div>
+        <div class="shade"></div>
+        <div class="in">
+          <p class="label" style="color:rgba(255,255,255,.7)">For men</p>
+          <h2 style="margin-top:.8rem">Feel like yourself again. Stronger.</h2>
+          <ul><li>Testosterone</li><li>Drive &amp; performance</li><li>Lean muscle</li><li>Fat loss</li><li>Recovery</li></ul>
+          <span class="btn light">Start as a man <span class="ar">→</span></span>
+        </div>
+      </a>
+      <a class="side" href="#apply" data-sex="s-f">
+        <div class="ph" data-slot="women" data-tone="skin"><span class="brief">Photo: woman, 50s, linen, sunlight, radiant and confident</span></div>
+        <div class="shade"></div>
+        <div class="in">
+          <p class="label" style="color:rgba(255,255,255,.7)">For women</p>
+          <h2 style="margin-top:.8rem">Menopause doesn't get the final word.</h2>
+          <ul><li>Hormone balance</li><li>Desire &amp; intimacy</li><li>Weight</li><li>Skin &amp; glow</li><li>Sleep &amp; mood</li></ul>
+          <span class="btn light">Start as a woman <span class="ar">→</span></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="sect" id="how">
+    <div class="wrap">
+      <div class="head"><h2>Three steps to feeling it.</h2><p>White-glove from the first message. No waiting rooms.</p></div>
+      <div class="how">
+        <div><span class="n">1</span><h3>Tell us your goals</h3><p>A two-minute private application. Confidential, no obligation.</p></div>
+        <div><span class="n">2</span><h3>Talk to a physician</h3><p>A private consultation about your health, your history and what you want back.</p></div>
+        <div><span class="n">3</span><h3>Start your protocol</h3><p>Labs where needed, then peptides, hormones or GLP-1s prescribed for you, with ongoing check-ins.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trust" style="padding-bottom:clamp(4.5rem,10vw,8.5rem)">
+    <div class="wrap">
+      <div class="trust">
+        <div class="trust-top">
+          <div>
+            <p class="label" style="color:rgba(255,255,255,.65)">Why you can trust us</p>
+            <h2 style="margin-top:.8rem">Physician-led. Pharmacy-grade. <span>Made in America.</span></h2>
+          </div>
+          <div class="stats">
+            <div><b>100%</b><span>US made &amp; tested</span></div>
+            <div><b>1:1</b><span>Physician-led care</span></div>
+            <div><b>Rx</b><span>Prescribed only for you</span></div>
+          </div>
+        </div>
+        <p class="lead">Every treatment is prescribed by a licensed physician and prepared by a private US pharmacy. Nothing generic, nothing overseas.</p>
+        <ul><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></i><b>Physician-led team</b><span>A licensed physician team oversees every plan, start to finish.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9zM6 7h12v14H6z"/><path d="M12 11v6M9 14h6"/></svg></i><b>Private pharmacy</b><span>Prepared for you by a licensed private compounding pharmacy.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4A1.5 1.5 0 0 0 20 19l-5-10V3"/><path d="M8 3h8M7 15h10"/></svg></i><b>GMP-certified lab</b><span>Made in a private, inspected laboratory held to GMP standards.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></i><b>US made &amp; tested</b><span>Made and tested in the United States.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></i><b>US based &amp; shipped</b><span>A US team, shipping discreetly from within the US.</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 5-6"/></svg></i><b>Your labs, your plan</b><span>Dosing guided by your own labs, never one-size-fits-all.</span></li></ul>
+        <a class="btn light" href="#apply">Book your consultation <span class="ar">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="doctor" style="padding-bottom:clamp(4.5rem,10vw,8.5rem)">
+    <div class="wrap doc">
+      <div class="ph" data-slot="doctor" data-tone="stone"><span class="brief">Photo: physician in a calm, bright consult room</span></div>
+      <div class="txt">
+        <p class="label">Physician-led care</p>
+        <h2>Led by physicians. Not a chatbot.</h2>
+        <div class="creds"><span>Conventional medicine</span><span>Functional testing</span><span>Hormone care</span><span>Traditional medicine</span></div>
+        <p class="q">Conventional medicine, functional and metabolic testing, and traditional medicine, from a physician team that knows you by name.</p>
+        <p class="mut">A licensed physician holds every consultation and prescribes only what is right for you and your goals.</p>
+        <a class="btn" href="#apply" style="align-self:flex-start">Book with a physician <span class="ar">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="concierge" style="padding-bottom:clamp(4.5rem,10vw,8.5rem)">
+    <div class="wrap">
+      <div class="conc">
+        <div class="ph" data-slot="concierge" data-tone="night"><span class="brief">Photo: private residence at dusk, pool, city or ocean view</span></div>
+        <div class="shade"></div>
+        <div class="card">
+          <p class="label">The Concierge Program</p>
+          <h2>Everything you want back. All of it.</h2>
+          <p style="color:rgba(255,255,255,.8)">A fully custom protocol across every goal, with your physician guiding you for three months.</p>
+          <p class="price">$15,000<small>/ 3 months</small></p>
+          <ul><li>Fully custom protocol</li><li>Direct physician guidance</li><li>Scope tailored at consultation</li></ul>
+          <a class="btn light" href="#apply" data-budget="b-3" style="align-self:flex-start">Apply for Concierge <span class="ar">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply" style="padding-bottom:clamp(4.5rem,10vw,8.5rem)">
+    <div class="wrap apply">
+      <div class="lead">
+        <div>
+          <h2>Your best life is one call away.</h2>
+          <p>Answer a few quick questions. If you're a fit, you'll pick a time with a physician right away.</p>
+        </div>
+        <div>
+          <p class="label" style="color:rgba(255,255,255,.6);margin-bottom:.6rem">Your goals</p>
+          <div class="mygoals" id="mygoals"><span>Pick below</span></div>
+        </div>
+        <ul><li>2 minutes</li><li>Completely confidential</li><li>No obligation</li></ul>
+      </div>
+
+      <form class="form" id="app" novalidate>
+        <div class="prog" aria-hidden="true"><i id="pfill"></i></div>
+        <p class="stepn" id="stepn">Step 1 of 4</p>
+
+        <fieldset class="qq">
+          <legend>What do you want back?</legend>
+          <p class="hint">Pick everything that matters to you.</p>
+          <div class="opts" id="goalOpts"></div>
+        </fieldset>
+
+        <fieldset class="qq" hidden>
+          <legend>A little about you.</legend>
+          <p class="sub" style="margin-top:0">I am</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="sex" id="s-f" value="Female"><span>A woman</span></label>
+            <label class="opt"><input type="radio" name="sex" id="s-m" value="Male"><span>A man</span></label>
+          </div>
+          <p class="sub">Age</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="age" id="a-u40" value="Under 40"><span>Under 40</span></label>
+            <label class="opt"><input type="radio" name="age" id="a-40" value="40–49"><span>40–49</span></label>
+            <label class="opt"><input type="radio" name="age" id="a-50" value="50–59"><span>50–59</span></label>
+            <label class="opt"><input type="radio" name="age" id="a-60" value="60+"><span>60+</span></label>
+          </div>
+          <div class="fields" style="margin-top:1.3rem"><label class="f full">State<select id="state" name="state"><option value="">Select your state</option></select></label></div>
+        </fieldset>
+
+        <fieldset class="qq" hidden>
+          <legend>When do you want to start?</legend>
+          <p class="hint">Best Life Clinicals is private-pay. This helps us match you with the right program.</p>
+          <p class="sub" style="margin-top:0">Start</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="timing" id="t-now" value="Right now"><span>Right now</span></label>
+            <label class="opt"><input type="radio" name="timing" id="t-30" value="Within 30 days"><span>Within 30 days</span></label>
+            <label class="opt"><input type="radio" name="timing" id="t-exp" value="Just looking"><span>Just looking</span></label>
+          </div>
+          <p class="sub">Investment for 3 months</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="budget" id="b-1" value="Under $5,000"><span>Under $5K</span></label>
+            <label class="opt"><input type="radio" name="budget" id="b-2" value="$5,000–$15,000"><span>$5K–$15K</span></label>
+            <label class="opt"><input type="radio" name="budget" id="b-3" value="$15,000+"><span>$15K+ · Concierge</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="qq" hidden>
+          <legend>Where should we reach you?</legend>
+          <p class="hint">Our physician team will confirm your consultation personally.</p>
+          <div class="fields">
+            <label class="f">First name<input id="fn" autocomplete="given-name"></label>
+            <label class="f">Last name<input id="ln" autocomplete="family-name"></label>
+            <label class="f">Email<input id="em" type="email" autocomplete="email"></label>
+            <label class="f">Mobile<input id="ph" type="tel" autocomplete="tel"></label>
+          </div>
+          <label class="consent"><input type="checkbox" id="consent"> I agree to be contacted about my consultation and understand this doesn't create a patient relationship.</label>
+        </fieldset>
+
+        <div class="done" id="done" hidden>
+          <p class="label" id="done-tag">You're in</p>
+          <h3 id="done-h"></h3>
+          <p id="done-p"></p>
+          <div class="goals-echo" id="echo"></div>
+          <div id="booking">
+            <p class="sub">Pick a time with a physician (sample times)</p>
+            <div class="slots" id="slots"></div>
+          </div>
+          <p class="demo" id="demo"></p>
+        </div>
+
+        <p class="err" id="err" role="alert"></p>
+        <div class="navrow" id="navrow">
+          <button type="button" class="back" id="back" hidden>← Back</button><span></span>
+          <button type="submit" class="btn" id="next">Continue <span class="ar">→</span></button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section style="padding-bottom:clamp(4.5rem,10vw,8.5rem)">
+    <div class="wrap">
+      <div class="head"><h2>Questions.</h2></div>
+      <div class="faq">
+        <details><summary>Who is Best Life Clinicals for?</summary><p>Men and women, most in their forties and beyond, who want their energy, body, desire and confidence back, and want a physician who truly knows them.</p></details>
+        <details><summary>What happens on the call?</summary><p>Your physician talks through your goals and history, then decides with you whether labs, treatment or both are the right next step.</p></details>
+        <details><summary>Will I be prescribed something?</summary><p>Only if it's clinically right for you. Some patients start with labs first. Your plan is decided by your physician, never by a form.</p></details>
+        <details><summary>Is it discreet?</summary><p>Completely. Your information is shared only with your care team.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="close">
+    <div class="ph" data-slot="close" data-tone="sunrise"><span class="brief">Photo: open road or sea at sunrise, a sense of a new beginning</span></div>
+    <div class="shade"></div>
+    <div class="wrap">
+      <h2 aria-label="Your best years are ahead of you.">Your best<span class="rot line" id="aheadRot" aria-hidden="true"></span><span class="rot line plain" id="aheadTail" aria-hidden="true"></span></h2>
+      <p>Let's go get them.</p>
+      <a class="btn light" href="#apply">Book your private consultation <span class="ar">→</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo" style="color:var(--black)">Best Life <span>Clinicals</span></span>
+    <p>Best Life Clinicals provides physician-led care by consultation only. All treatments require evaluation by a licensed provider and are prescribed only when clinically appropriate. Individual results vary. Nothing on this site is medical advice. [Final legal and compliance language to come.]</p>
+    <nav aria-label="Footer"><a href="#offer">What we offer</a><a href="#" data-colleen>Wellness programs</a><a href="#goals">Goals</a><a href="#concierge">Concierge</a><a href="#apply">Book</a></nav>
+  </div>
+</footer>
+
+
+<div class="stick" id="stick"><a class="btn" href="#apply">Book your consultation <span class="ar">→</span></a></div>
+
+<script>
+/* Rotating headlines. Hero: "Get your best ___ back." Closing: "Your best ___ are ahead of you." */
+/* Each rotator cycles a set of lines in step: words crossfade in one shared slot while the slot's width glides to the next word's, so the text around it moves smoothly instead of jumping. */
+function rotator(parts,ms){
+  parts=parts.filter(p=>p.el);if(!parts.length)return;
+  const n=parts[0].items.length;
+  parts.forEach(p=>{p.ws=p.items.map((t,k)=>{const w=document.createElement('span');w.className='w'+(k===0?' on':'');w.textContent=t;p.el.appendChild(w);return w})});
+  let k=0;
+  const fit=()=>parts.forEach(p=>{if(!p.el.classList.contains('line'))p.el.style.width=p.ws[p.cur||0].offsetWidth+'px'});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);fit();addEventListener('resize',fit);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const tick=()=>{
+    k=(k+1)%n;
+    parts.forEach(p=>{const c=p.cur||0;if(p.items[c]===p.items[k])return;p.ws[c].classList.remove('on');p.ws[k].classList.add('on');p.cur=k});
+    fit();
+  };
+  // start the clock only once the words are actually on screen, so the first word gets the same time as the rest
+  let timer=null;
+  const run=on=>{if(on&&!timer&&!document.hidden)timer=setInterval(tick,ms);if(!on&&timer){clearInterval(timer);timer=null}};
+  let seen=false;
+  const ready=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();
+  ready.then(()=>{
+    if('IntersectionObserver' in window){new IntersectionObserver(es=>{seen=es[0].isIntersecting;run(seen)},{threshold:.5}).observe(parts[0].el)}else{seen=true;run(true)}
+    document.addEventListener('visibilitychange',()=>run(seen&&!document.hidden));
+  });
+}
+rotator([{el:document.getElementById('heroRot'),items:['life','body','energy','sex life','skin','sleep','focus','strength','confidence']}],2000);
+const AHEAD=[['years','are'],['adventures','are'],['relationships','are'],['mornings','are'],['decades','are'],['nights','are'],['summers','are'],['chapters','are']];
+rotator([{el:document.getElementById('aheadRot'),items:AHEAD.map(a=>a[0])},{el:document.getElementById('aheadTail'),items:AHEAD.map(a=>a[1]+' ahead of you.')}],2000);
+
+/* Review-only palette switcher: Black, Oxblood, Deep ocean. Remembers the last pick in this browser. */
+(function(){
+  const btns=[...document.querySelectorAll('[data-pal]')];
+  function setPal(p){document.documentElement.dataset.palette=p;btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.pal===p));try{localStorage.setItem('oriel-pal2',p)}catch(e){}}
+  btns.forEach(b=>b.addEventListener('click',()=>setPal(b.dataset.pal)));
+  let saved='ocean';try{saved=localStorage.getItem('oriel-pal2')||'ocean'}catch(e){}
+  setPal(saved);
+})();
+
+/* COLLEEN_SITE: the wellness site (Colleen's), where wellness programs and protocols live. Set the URL once it is live. */
+const COLLEEN_SITE = "";
+document.querySelectorAll('[data-colleen]').forEach(a=>{ if(COLLEEN_SITE){a.href=COLLEEN_SITE;a.target='_blank';a.rel='noopener'} else a.href='#apply' });
+
+/* PHOTOS: paste an image URL (or a data: URI) for any slot and it replaces the stand-in. */
+const PHOTOS = { hero:"img/hero-b.jpg", hope:"img/hope-couple.jpg", men:"img/men.jpg", women:"img/women.jpg", doctor:"img/doctor.jpg", concierge:"img/concierge.jpg", close:"img/close.jpg", goal_weight:"img/goal-weight.jpg", goal_energy:"img/goal-energy.jpg", goal_desireM:"img/goal-desireM.jpg", goal_desireW:"img/goal-desireW.jpg", goal_hormones:"img/goal-hormones.jpg", goal_testosterone:"img/goal-testosterone.jpg", goal_body:"img/goal-body.jpg", goal_skin:"img/goal-skin.jpg", goal_longevity:"img/goal-longevity.jpg" };
+
+function applyPhoto(el,url){ if(url){el.style.backgroundImage=`url("${url}")`;el.classList.add('has-photo')} else {el.style.backgroundImage='';el.classList.remove('has-photo')} }
+document.querySelectorAll('[data-slot]').forEach(el=>{ if(el.dataset.slot!=='goal') applyPhoto(el,PHOTOS[el.dataset.slot]) });
+
+
+
+/* Goals: one source drives the picker, the form options and the confirmation. */
+const GOALS=[
+  {id:'weight',chip:'Weight',form:'Lose the weight',tag:'Weight · GLP-1',h:'Lose the weight. For good this time.',p:'Quiet the cravings and finally see the body your work deserves.',cta:'Start my weight plan',tone:'skin',brief:'Photo: lean, confident body in natural light'},
+  {id:'energy',chip:'Energy',form:'My energy',tag:'Energy · Peptides',h:'Wake up wanting the day again.',p:'Real, all-day energy. Not another coffee.',cta:'Get my energy back',tone:'sunrise',brief:'Photo: early morning run, sun just up'},
+  {id:'desireM',chip:'Desire (men)',form:'Drive & performance',tag:'Sexual wellness · Men',h:'Bring the fire back.',p:'Drive, stamina and confidence, handled with total discretion.',cta:'Talk to a physician privately',tone:'dusk',brief:'Photo: couple at dusk, close, intimate, tasteful'},
+  {id:'desireW',chip:'Desire (women)',form:'Desire & intimacy',tag:'Sexual wellness · Women',h:'Want it again.',p:'Desire and intimacy that feel like you.',cta:'Talk to a physician privately',tone:'dusk',brief:'Photo: woman, relaxed, sensual, golden light'},
+  {id:'hormones',chip:'Hormones',form:'Balance my hormones',tag:'Hormones · Women',h:"Menopause doesn't get the final word.",p:'Sleep, mood, body and spark, back in balance.',cta:'Balance my hormones',tone:'sea',brief:'Photo: woman, 50s, swimming in clear water'},
+  {id:'testosterone',chip:'Testosterone',form:'Testosterone',tag:'Hormones · Men',h:'Feel like yourself again. Stronger.',p:'Strength, focus and presence, restored.',cta:'Check my levels',tone:'night',brief:'Photo: man, 50s, sharp, city at night'},
+  {id:'body',chip:'Muscle & body',form:'Build muscle',tag:'Body · Peptides · Growth hormone',h:'Build the body you always wanted.',p:'Lean muscle, faster recovery, and the strongest version of you yet.',cta:'Build my protocol',tone:'dusk',brief:'Photo: strength training, natural light'},
+  {id:'skin',chip:'Skin',form:'Skin & glow',tag:'Aesthetics',h:'Look as good as you feel.',p:'Skin that looks rested, bright and alive.',cta:'Start my glow plan',tone:'skin',brief:'Photo: close-up of glowing skin in daylight'},
+  {id:'longevity',chip:'Longevity',form:'Longevity',tag:'Longevity · Labs',h:'Stay young for longer.',p:'Know your numbers, then stay sharp, strong and active for decades.',cta:'Build my longevity plan',tone:'stone',brief:'Photo: active couple hiking a coastal ridge'}
+];
+
+const chips=document.getElementById('chips'),goalOpts=document.getElementById('goalOpts');
+const pickPh=document.getElementById('pickPh'),pickTxt=document.getElementById('pickTxt');
+let current=GOALS[0];
+GOALS.forEach((g,k)=>{
+  const b=document.createElement('button');b.type='button';b.textContent=g.chip;b.setAttribute('aria-pressed',k===0);b.dataset.id=g.id;
+  b.addEventListener('click',()=>pick(g));chips.appendChild(b);
+  const l=document.createElement('label');l.className='opt';
+  l.innerHTML=`<input type="checkbox" name="goals" id="g-${g.id}" value="${g.form}"><span>${g.form}</span>`;
+  goalOpts.appendChild(l);
+});
+function render(g){
+  document.getElementById('pickTag').textContent=g.tag;
+  document.getElementById('pickH').textContent=g.h;
+  document.getElementById('pickP').textContent=g.p;
+  document.getElementById('pickCta').innerHTML=`${g.cta} <span class="ar">→</span>`;
+  document.getElementById('pickBrief').textContent=g.brief;
+  pickPh.dataset.tone=g.tone;pickPh.dataset.goal=g.id;applyPhoto(pickPh,PHOTOS['goal_'+g.id]);
+}
+function pick(g){
+  current=g;
+  chips.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===g.id));
+  pickTxt.classList.add('out');pickPh.classList.add('out');
+  setTimeout(()=>{render(g);pickTxt.classList.remove('out');pickPh.classList.remove('out')},matchMedia('(prefers-reduced-motion: reduce)').matches?0:220);
+}
+render(current);
+document.getElementById('pickCta').addEventListener('click',()=>{document.getElementById('g-'+current.id).checked=true;syncGoals()});
+
+/* Nav turns solid after the hero; mobile booking bar shows between the hero and the form. */
+(function(){
+  const nav=document.getElementById('nav'),stick=document.getElementById('stick');
+  const hero=document.querySelector('.hero'),apply=document.getElementById('apply');
+  let pastHero=false,atForm=false;
+  const set=()=>stick.classList.toggle('on',pastHero&&!atForm);
+  new IntersectionObserver(e=>{pastHero=!e[0].isIntersecting;nav.classList.toggle('solid',pastHero);set()},{rootMargin:'-80px 0px 0px 0px'}).observe(hero);
+  new IntersectionObserver(e=>{atForm=e[0].isIntersecting;set()}).observe(apply);
+})();
+
+/* Application */
+const states=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming","Outside the U.S."];
+const sel=document.getElementById('state');
+states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o)});
+const form=document.getElementById('app'),steps=[...form.querySelectorAll('.qq')];
+const err=document.getElementById('err'),back=document.getElementById('back'),next=document.getElementById('next');
+let i=0;
+const val=n=>{const el=form.querySelector(`[name="${n}"]:checked`);return el?el.value:''};
+const v=id=>document.getElementById(id).value.trim();
+const chosen=()=>[...form.querySelectorAll('[name="goals"]:checked')].map(x=>x.value);
+function syncGoals(){
+  const box=document.getElementById('mygoals'),g=chosen();
+  box.innerHTML=g.length?g.map(x=>`<span>${x}</span>`).join(''):'<span>Pick below</span>';
+}
+goalOpts.addEventListener('change',syncGoals);
+const checks=[
+  ()=>chosen().length?'':'Pick at least one goal to continue.',
+  ()=>!val('sex')?'Choose woman or man.':!val('age')?'Select your age.':!sel.value?'Select your state.':'',
+  ()=>!val('timing')?'Choose when you want to start.':!val('budget')?'Choose an investment range.':'',
+  ()=>(!v('fn')||!v('ln'))?'Add your first and last name.':!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('em'))?'Add a valid email.':v('ph').replace(/\D/g,'').length<10?'Add a mobile number with area code.':!document.getElementById('consent').checked?'Please agree to be contacted.':''
+];
+function show(){
+  steps.forEach((s,k)=>s.hidden=k!==i);
+  document.getElementById('pfill').style.width=((i+1)/steps.length*100)+'%';
+  document.getElementById('stepn').textContent=`Step ${i+1} of ${steps.length}`;
+  back.hidden=i===0;
+  next.innerHTML=i===steps.length-1?'See my next step <span class="ar">→</span>':'Continue <span class="ar">→</span>';
+  err.textContent='';
+}
+back.addEventListener('click',()=>{if(i>0){i--;show()}});
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const m=checks[i]();if(m){err.textContent=m;return}
+  if(i<steps.length-1){i++;show();return}
+  finish();
+});
+document.querySelectorAll('[data-sex]').forEach(a=>a.addEventListener('click',()=>{document.getElementById(a.dataset.sex).checked=true}));
+document.querySelectorAll('[data-budget]').forEach(a=>a.addEventListener('click',()=>{document.getElementById(a.dataset.budget).checked=true}));
+
+// Scoring: 40+, U.S., $5k+, starting within 30 days = qualified (books instantly); $15k+ on top = concierge; otherwise the team reviews and calls.
+function finish(){
+  const age=val('age'),timing=val('timing'),budget=val('budget');
+  let tier='qualified';
+  if(age==='Under 40'||sel.value==='Outside the U.S.'||budget==='Under $5,000'||timing==='Just looking')tier='review';
+  else if(budget==='$15,000+')tier='concierge';
+  steps.forEach(s=>s.hidden=true);document.getElementById('navrow').hidden=true;
+  document.getElementById('pfill').style.width='100%';document.getElementById('stepn').textContent='Complete';err.textContent='';
+  const name=v('fn');
+  document.getElementById('echo').innerHTML=chosen().map(x=>`<span>${x}</span>`).join('');
+  if(tier==='review'){
+    document.getElementById('done-tag').textContent='Received';
+    document.getElementById('done-h').textContent=`Thank you, ${name}.`;
+    document.getElementById('done-p').textContent='Our physician team reviews every application personally and will reach out about your goals:';
+    document.getElementById('booking').hidden=true;
+  }else{
+    document.getElementById('done-h').textContent=`${name}, let's get it back.`;
+    document.getElementById('done-p').textContent=tier==='concierge'
+      ?'You’re a match for the Concierge Program. Choose a time to talk with a physician about your goals:'
+      :'You’re a great match. Choose a time to talk with a physician about your goals:';
+    const slots=document.getElementById('slots');slots.innerHTML='';
+    ['Tue 9:00 AM','Tue 1:30 PM','Wed 10:00 AM','Wed 4:00 PM','Thu 11:00 AM','Fri 2:00 PM'].forEach(t=>{
+      const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-pressed','false');
+      b.addEventListener('click',()=>{slots.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));document.getElementById('done-tag').textContent=`Requested · ${t}`});
+      slots.appendChild(b);
+    });
+  }
+  document.getElementById('demo').textContent=`Prototype note: nothing was sent and the times are samples. This lead scored "${tier}". Live, the times come from the physicians' real calendar (Calendly, Cal.com or similar).`;
+  document.getElementById('done').hidden=false;
+}
+show();
+</script>
