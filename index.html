@@ -325,6 +325,14 @@ label.f input:focus,label.f select:focus{outline:none;border-color:var(--deep);b
 .close .shade{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.42)}
 .close .wrap{position:relative;z-index:2;width:100%}
 .close h2{font-size:clamp(2.52rem,7.06vw,6.72rem);max-width:12ch;margin:0 auto}
+.join{padding-block:clamp(3.2rem,7vw,6rem);background:var(--soft)}
+.join-in{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2rem,5vw,5rem);align-items:start}
+.join h2{font-size:clamp(2.3rem,3.9vw,3.7rem);margin-top:.7rem}
+.join-in>div>p:not(.label){font-size:1.15rem;color:var(--gray);margin-top:1.1rem;max-width:34ch;line-height:1.45}
+.join label.f input{background:var(--white)}
+.join .btn{margin-top:1.4rem}
+.join-ok{margin-top:1rem;font-weight:500;color:var(--deep)}
+@media(max-width:860px){.join-in{grid-template-columns:1fr}}
 .close p{margin:1.6rem auto 2.2rem;font-size:clamp(1.35rem,1.9vw,1.7rem);color:rgba(255,255,255,.85)}
 footer{padding-block:2.6rem 6rem;font-size:.85rem;color:var(--gray)}
 footer .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:start}
@@ -562,7 +570,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
 
   <section class="sect" id="how">
     <div class="wrap">
-      <div class="head"><h2>Three steps to feeling it.</h2><p>White-glove from the first message. No waiting rooms.</p></div>
+      <div class="head"><h2>Three steps to your best life.</h2><p>Personal care from your very first message. No clinics, no waiting rooms.</p></div>
       <div class="how">
         <div><span class="n">1</span><h3>Tell us your goals</h3><p>A two-minute private application. Confidential, no obligation.</p></div>
         <div><span class="n">2</span><h3>Talk to a physician</h3><p>A private consultation about your health, your history and what you want back.</p></div>
@@ -603,12 +611,12 @@ footer nav a{text-decoration:none;white-space:nowrap}
   </section>
 
   <section id="apply" style="padding-bottom:clamp(3.2rem,7vw,6rem)">
-    <div class="wrap"><div class="head"><div><p class="label" style="color:var(--sun);margin-bottom:.7rem">Free private assessment</p><h2>Are you a fit? Find out now.</h2></div><p>Four quick questions about your goals. A licensed physician reviews your answers, and if you're a fit you'll book your private consultation right away.</p></div></div>
+    <div class="wrap"><div class="head"><div><p class="label" style="color:var(--sun);margin-bottom:.7rem">Free private assessment</p><h2>Are you a fit? Find out now.</h2></div><p>Four quick questions about your goals. A licensed physician reviews your answers personally, and if you're a fit, we'll reach out to set up your private consultation.</p></div></div>
     <div class="wrap apply">
       <div class="lead">
         <div>
           <h2>Your best life is one call away.</h2>
-          <p>Answer a few quick questions. If you're a fit, you'll pick a time with a physician right away.</p>
+          <p>Answer a few quick questions. A licensed physician reviews them and reaches out to you personally.</p>
         </div>
         <div class="lead-bottom">
           <div class="perks"><div><b>4</b><span>quick questions</span></div><div><b>Free</b><span>and fully confidential</span></div><div><b>Zero</b><span>obligation</span></div></div>
@@ -662,7 +670,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
 
         <fieldset class="qq" hidden>
           <legend>Where should we reach you?</legend>
-          <p class="hint">Our physician team will confirm your consultation personally.</p>
+          <p class="hint">A licensed physician will review your answers and reach out to you here.</p>
           <div class="fields">
             <label class="f">First name<input id="fn" autocomplete="given-name"></label>
             <label class="f">Last name<input id="ln" autocomplete="family-name"></label>
@@ -677,11 +685,6 @@ footer nav a{text-decoration:none;white-space:nowrap}
           <h3 id="done-h"></h3>
           <p id="done-p"></p>
           <div class="goals-echo" id="echo"></div>
-          <div id="booking">
-            <p class="sub">Pick a time with a physician (sample times)</p>
-            <div class="slots" id="slots"></div>
-          </div>
-          <p class="demo" id="demo"></p>
         </div>
 
         <p class="err" id="err" role="alert"></p>
@@ -712,6 +715,29 @@ footer nav a{text-decoration:none;white-space:nowrap}
       <h2 aria-label="Your best years are ahead of you.">Your best<span class="rot line" id="aheadRot" aria-hidden="true"></span><span class="rot line plain" id="aheadTail" aria-hidden="true"></span></h2>
       <p>Let's go get them.</p>
       <a class="btn light" href="#apply">Book your private consultation <span class="ar">→</span></a>
+    </div>
+  </section>
+
+  <section class="join" id="join">
+    <div class="wrap join-in">
+      <div>
+        <p class="label" style="color:var(--sun)">Stay in the loop</p>
+        <h2>Be first to know.</h2>
+        <p>New protocols, member-only offers and straight answers from our physicians. Never spam, never shared.</p>
+      </div>
+      <form id="joinForm" novalidate>
+        <div class="fields">
+          <label class="f">First name<input id="jn" autocomplete="given-name"></label>
+          <label class="f">Last name<input id="jl" autocomplete="family-name"></label>
+          <label class="f">Email<input id="je" type="email" autocomplete="email"></label>
+          <label class="f">Mobile<input id="jp" type="tel" autocomplete="tel"></label>
+        </div>
+        <label class="consent"><input type="checkbox" id="jem" checked> Send me emails from Best Life Clinicals.</label>
+        <label class="consent" style="margin-top:.6rem"><input type="checkbox" id="jsms"> Send me texts. By checking this you agree to receive recurring marketing texts from Best Life Clinicals at the number above. Consent isn't required to buy. Msg and data rates may apply. Reply STOP to opt out.</label>
+        <p class="err" id="jerr" role="alert"></p>
+        <button type="submit" class="btn" id="jbtn">Join the list <span class="ar">→</span></button>
+        <p class="join-ok" id="jok" hidden>You're on the list. Welcome.</p>
+      </form>
     </div>
   </section>
 </main>
@@ -818,6 +844,13 @@ function pick(g){
   setTimeout(()=>{render(g);pickTxt.classList.remove('out');pickPh.classList.remove('out')},matchMedia('(prefers-reduced-motion: reduce)').matches?0:220);
 }
 render(current);
+function lockPicked(){
+  const pk=document.querySelector('.picked');pk.style.minHeight='';let h=0;
+  GOALS.forEach(g=>{render(g);h=Math.max(h,pk.offsetHeight)});
+  render(current);pk.style.minHeight=h+'px';
+}
+lockPicked();let lpT;addEventListener('resize',()=>{clearTimeout(lpT);lpT=setTimeout(lockPicked,150)});
+document.fonts&&document.fonts.ready.then(lockPicked);
 document.getElementById('pickCta').addEventListener('click',()=>{document.getElementById('g-'+current.id).checked=true;syncGoals()});
 
 /* Nav turns solid after the hero; mobile booking bar shows between the hero and the form. */
@@ -857,7 +890,7 @@ function show(){
   document.getElementById('pfill').style.width=((i+1)/steps.length*100)+'%';
   document.getElementById('stepn').textContent=`Step ${i+1} of ${steps.length}`;
   back.hidden=i===0;
-  next.innerHTML=i===steps.length-1?'See my next step <span class="ar">→</span>':'Continue <span class="ar">→</span>';
+  next.innerHTML=i===steps.length-1?'Submit my answers <span class="ar">→</span>':'Continue <span class="ar">→</span>';
   err.textContent='';
 }
 back.addEventListener('click',()=>{if(i>0){i--;show()}});
@@ -870,7 +903,7 @@ form.addEventListener('submit',e=>{
 document.querySelectorAll('[data-sex]').forEach(a=>a.addEventListener('click',()=>{document.getElementById(a.dataset.sex).checked=true}));
 document.querySelectorAll('[data-budget]').forEach(a=>a.addEventListener('click',()=>{document.getElementById(a.dataset.budget).checked=true}));
 
-// Scoring: 40+, U.S., $5k+, starting within 30 days = qualified (books instantly); $15k+ on top = concierge; otherwise the team reviews and calls.
+// Scoring tier is kept for the team's lead routing; every applicant sees the same confirmation and a physician reaches out.
 function finish(){
   const age=val('age'),timing=val('timing'),budget=val('budget');
   let tier='qualified';
@@ -880,25 +913,17 @@ function finish(){
   document.getElementById('pfill').style.width='100%';document.getElementById('stepn').textContent='Complete';err.textContent='';
   const name=v('fn');
   document.getElementById('echo').innerHTML=chosen().map(x=>`<span>${x}</span>`).join('');
-  if(tier==='review'){
-    document.getElementById('done-tag').textContent='Received';
-    document.getElementById('done-h').textContent=`Thank you, ${name}.`;
-    document.getElementById('done-p').textContent='Our physician team reviews every application personally and will reach out about your goals:';
-    document.getElementById('booking').hidden=true;
-  }else{
-    document.getElementById('done-h').textContent=`${name}, let's get it back.`;
-    document.getElementById('done-p').textContent=tier==='concierge'
-      ?'You’re a match for the Concierge Program. Choose a time to talk with a physician about your goals:'
-      :'You’re a great match. Choose a time to talk with a physician about your goals:';
-    const slots=document.getElementById('slots');slots.innerHTML='';
-    ['Tue 9:00 AM','Tue 1:30 PM','Wed 10:00 AM','Wed 4:00 PM','Thu 11:00 AM','Fri 2:00 PM'].forEach(t=>{
-      const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-pressed','false');
-      b.addEventListener('click',()=>{slots.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));document.getElementById('done-tag').textContent=`Requested · ${t}`});
-      slots.appendChild(b);
-    });
-  }
-  document.getElementById('demo').textContent=`Prototype note: nothing was sent and the times are samples. This lead scored "${tier}". Live, the times come from the physicians' real calendar (Calendly, Cal.com or similar).`;
+  document.getElementById('done-tag').textContent=tier==='concierge'?'Received · Concierge':'Received';
+  document.getElementById('done-h').textContent=`Thank you, ${name}.`;
+  document.getElementById('done-p').textContent='A licensed physician is reviewing your answers personally. If you\u2019re a fit, one of our physicians will reach out by email or text within one business day to set up your private consultation. Your goals:';
   document.getElementById('done').hidden=false;
 }
 show();
+document.getElementById('joinForm').addEventListener('submit',e=>{
+  e.preventDefault();const g=id=>document.getElementById(id).value.trim(),je=document.getElementById('jerr');
+  if(!g('jn'))return je.textContent='Add your first name.';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('je')))return je.textContent='Add a valid email.';
+  if(document.getElementById('jsms').checked&&g('jp').replace(/\D/g,'').length<10)return je.textContent='Add a mobile number with area code for texts.';
+  je.textContent='';document.getElementById('jbtn').hidden=true;document.getElementById('jok').hidden=false;
+});
 </script>
