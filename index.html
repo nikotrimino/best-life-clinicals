@@ -968,12 +968,25 @@ form.addEventListener('submit',e=>{
 document.querySelectorAll('[data-sex]').forEach(a=>a.addEventListener('click',()=>{document.getElementById(a.dataset.sex).checked=true}));
 document.querySelectorAll('[data-budget]').forEach(a=>a.addEventListener('click',()=>{document.getElementById(a.dataset.budget).checked=true}));
 
+// Form submissions go to Web3Forms (Best Life Clinicals form). The access key is public by design.
+const W3F_KEY='313242fb-0f85-4bd9-9d22-89eff2bdd774';
+async function sendW3F(data){
+  const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:W3F_KEY,from_name:'Best Life Clinicals website',...data})});
+  const j=await r.json().catch(()=>({}));if(!r.ok||!j.success)throw new Error(j.message||'Submit failed');
+}
 // Scoring tier is kept for the team's lead routing; every applicant sees the same confirmation and a physician reaches out.
-function finish(){
+async function finish(){
   const age=val('age'),timing=val('timing'),budget=val('budget');
   let tier='qualified';
   if(age==='Under 40'||sel.value==='Outside the U.S.'||budget==='Under $5,000'||timing==='Just looking')tier='review';
   else if(budget==='$15,000+')tier='concierge';
+  const nb=next.innerHTML;next.disabled=true;next.textContent='Sending…';
+  try{
+    await sendW3F({subject:`New assessment: ${v('fn')} ${v('ln')} (${tier})`,'Lead tier':tier,name:`${v('fn')} ${v('ln')}`,email:v('em'),phone:v('ph'),
+      Goals:chosen().join(', '),Sex:val('sex'),Age:age,State:sel.value,'Start':timing,'Investment (3 months)':budget,
+      'Agreed to be contacted':'Yes','Email marketing opt-in':document.getElementById('optEm').checked?'Yes':'No','Text marketing opt-in':document.getElementById('optSms').checked?'Yes':'No'});
+  }catch(e){next.disabled=false;next.innerHTML=nb;err.textContent='Something went wrong sending your answers. Please try again.';return}
+  next.disabled=false;next.innerHTML=nb;
   steps.forEach(s=>s.hidden=true);document.getElementById('navrow').hidden=true;
   document.getElementById('pfill').style.width='100%';document.getElementById('stepn').textContent='Complete';err.textContent='';
   const name=v('fn');
@@ -989,6 +1002,11 @@ document.getElementById('joinForm').addEventListener('submit',e=>{
   if(!g('jn'))return je.textContent='Add your first name.';
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('je')))return je.textContent='Add a valid email.';
   if(document.getElementById('jsms').checked&&g('jp').replace(/\D/g,'').length<10)return je.textContent='Add a mobile number with area code for texts.';
-  je.textContent='';document.getElementById('jfields').hidden=true;document.getElementById('jok').hidden=false;
+  je.textContent='';const jb=document.getElementById('jbtn'),h=jb.innerHTML;jb.disabled=true;jb.textContent='Sending…';
+  sendW3F({subject:`New Insider signup: ${g('jn')} ${g('jl')}`,name:`${g('jn')} ${g('jl')}`,email:g('je'),phone:g('jp'),
+    'Email opt-in':document.getElementById('jem').checked?'Yes':'No','Text opt-in':document.getElementById('jsms').checked?'Yes':'No'})
+  .then(()=>{document.getElementById('jfields').hidden=true;document.getElementById('jok').hidden=false})
+  .catch(()=>{je.textContent='Something went wrong. Please try again.'})
+  .finally(()=>{jb.disabled=false;jb.innerHTML=h});
 });
 </script>
