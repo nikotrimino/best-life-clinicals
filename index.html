@@ -341,11 +341,11 @@ label.f input:focus,label.f select:focus{outline:none;border-color:var(--deep);b
 .close h2{font-size:clamp(2.52rem,7.06vw,6.72rem);max-width:12ch;margin:0 auto}
 .join{padding-block:clamp(3.2rem,7vw,6rem)}
 .join-card{background:var(--deep);color:var(--white);border-radius:28px;padding:clamp(1.6rem,4.5vw,4rem);display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
-.join-copy .label{color:var(--sun)}
+.join-copy .label{color:var(--sun);font-size:clamp(1rem,1.2vw,1.15rem);font-weight:600;letter-spacing:.02em}
 .join-copy h2{font-size:clamp(2.6rem,4.6vw,4.4rem);margin-top:.7rem}
 .join-copy .lede{font-size:clamp(1.15rem,1.5vw,1.35rem);color:rgba(255,255,255,.8);margin-top:1rem;max-width:30ch;line-height:1.4}
 .join-perks{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1.1rem}
-.join-perks li{display:flex;gap:1rem;align-items:center;color:rgba(255,255,255,.72);font-size:.98rem;line-height:1.35}
+.join-perks li{display:flex;gap:1rem;align-items:center;color:rgba(255,255,255,.75);font-size:1.02rem;line-height:1.35}
 .join-perks span{flex:none;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);display:grid;place-items:center;color:var(--sun)}
 .join-perks svg{width:21px;height:21px}
 .join-perks b{display:block;color:var(--white);font-size:1.1rem;font-weight:600}
@@ -717,6 +717,8 @@ footer nav a{text-decoration:none;white-space:nowrap}
             <label class="f">Mobile<input id="ph" type="tel" autocomplete="tel"></label>
           </div>
           <label class="consent"><input type="checkbox" id="consent"> I agree to be contacted about my consultation and understand this doesn't create a patient relationship.</label>
+          <label class="consent" style="margin-top:.7rem"><input type="checkbox" id="optEm" name="opt_email" value="yes" checked> Send me Best Life Clinicals emails: new treatments, offers and tips. Unsubscribe anytime.</label>
+          <label class="consent" style="margin-top:.7rem"><input type="checkbox" id="optSms" name="opt_sms" value="yes"> Send me marketing texts too. I agree to receive recurring marketing texts at the number above. Consent isn't required to buy. Msg and data rates may apply. Reply STOP to opt out.</label>
         </fieldset>
 
         <div class="done" id="done" hidden>
@@ -769,12 +771,12 @@ footer nav a{text-decoration:none;white-space:nowrap}
       <div class="join-card">
         <div class="join-copy">
           <p class="label">The Best Life list</p>
-          <h2>Be first to know.</h2>
-          <p class="lede">The inside track on getting your best life back.</p>
+          <h2>Your best life, in your inbox.</h2>
+          <p class="lede">Simple, physician-backed ways to feel better, look better and live longer.</p>
           <ul class="join-perks">
-            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span><div><b>New protocols first</b>Before they're public.</div></li>
-            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></span><div><b>Member-only offers</b>Pricing you won't see anywhere else.</div></li>
-            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><div><b>Straight answers</b>From our physicians, in plain English.</div></li>
+            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span><div><b>First to hear what's new</b>New treatments and programs, before anyone else.</div></li>
+            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></span><div><b>Exclusive offers</b>Savings we only share with the list.</div></li>
+            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><div><b>The science, made simple</b>Peptides, hormones and longevity, explained clearly.</div></li>
           </ul>
         </div>
         <form class="join-form" id="joinForm" novalidate>
