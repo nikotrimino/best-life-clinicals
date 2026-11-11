@@ -155,6 +155,12 @@ a{color:inherit}
 .picked .tag{font-size:.82rem;color:rgba(255,255,255,.6)}
 .picked h3{font-size:clamp(2.02rem,3.86vw,3.70rem);margin-top:1rem}
 .picked p{font-size:1.15rem;color:rgba(255,255,255,.78);max-width:30ch;margin-top:1.2rem;line-height:1.45}
+.picked .rx{margin-top:clamp(1.6rem,3vw,2.4rem)}
+.picked .rx .rxh{font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--sun);margin:0;max-width:none}
+.picked .rx ul{list-style:none;margin:.7rem 0 0;padding:0}
+.picked .rx li{padding:.72rem 0 .72rem 1.3rem;border-bottom:1px solid rgba(255,255,255,.14);font-size:1.05rem;color:var(--white);position:relative;line-height:1.35}
+.picked .rx li::before{content:"";position:absolute;left:0;top:1.22rem;width:7px;height:7px;border-radius:50%;background:var(--sun)}
+.picked .rx .rxn{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:.8rem;max-width:none}
 .picked .fade{transition:opacity .35s}
 .picked .fade.out{opacity:0}
 @media(max-width:860px){.picked{grid-template-columns:1fr}}
@@ -319,7 +325,7 @@ label.f input:focus,label.f select:focus{outline:none;border-color:var(--deep);b
 .close .shade{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.42)}
 .close .wrap{position:relative;z-index:2;width:100%}
 .close h2{font-size:clamp(2.52rem,7.06vw,6.72rem);max-width:12ch;margin:0 auto}
-.close p{margin:1.6rem auto 2.2rem;font-size:1.15rem;color:rgba(255,255,255,.85)}
+.close p{margin:1.6rem auto 2.2rem;font-size:clamp(1.35rem,1.9vw,1.7rem);color:rgba(255,255,255,.85)}
 footer{padding-block:2.6rem 6rem;font-size:.85rem;color:var(--gray)}
 footer .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:start}
 footer p{max-width:70ch}
@@ -395,7 +401,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
   .side h2{font-size:1.9rem}
   .close h2{font-size:3rem;max-width:none}
   .close .rot.line .w{white-space:normal;max-width:92vw}
-  .close p{font-size:1.1rem;margin:1.2rem auto 1.8rem}
+  .close p{font-size:1.3rem;margin:1.2rem auto 1.8rem}
   .faq summary{font-size:1.05rem;padding-block:1.1rem;gap:1rem}
   .faq summary::after{font-size:1.35rem}
   .apply{gap:10px}
@@ -510,6 +516,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
             <p class="tag" id="pickTag"></p>
             <h3 id="pickH"></h3>
             <p id="pickP"></p>
+            <div class="rx"><p class="rxh">What your physician may consider</p><ul id="pickRx"></ul><p class="rxn">Prescribed only when clinically appropriate. Your plan is set at your consultation.</p></div>
           </div>
           <div><a class="btn light" href="#apply" id="pickCta">Start <span class="ar">→</span></a></div>
         </div>
@@ -535,7 +542,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
         <div class="shade"></div>
         <div class="in">
           <p class="label" style="color:rgba(255,255,255,.7)">For men</p>
-          <h2 style="margin-top:.8rem">Feel like yourself again. Stronger.</h2>
+          <h2 style="margin-top:.8rem">Feel like yourself again. Only better.</h2>
           <ul><li>Testosterone</li><li>Drive &amp; performance</li><li>Lean muscle</li><li>Fat loss</li><li>Recovery</li></ul>
           <span class="btn light">Start as a man <span class="ar">→</span></span>
         </div>
@@ -585,7 +592,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
         <div class="shade"></div>
         <div class="card">
           <p class="label">The Concierge Program</p>
-          <h2>Everything you want back. All of it.</h2>
+          <h2>Everything you want back, in one plan.</h2>
           <p style="color:rgba(255,255,255,.8)">A fully custom protocol across every goal, with your physician guiding you for three months.</p>
           <p class="price">$15,000<small>/ 3 months</small></p>
           <ul><li>Fully custom protocol</li><li>Direct physician guidance</li><li>Scope tailored at consultation</li></ul>
@@ -713,7 +720,7 @@ footer nav a{text-decoration:none;white-space:nowrap}
   <div class="wrap">
     <span class="logo" style="color:var(--black)">Best Life <span>Clinicals</span></span>
     <p>Best Life Clinicals provides physician-led care by consultation only. All treatments require evaluation by a licensed provider and are prescribed only when clinically appropriate. Individual results vary. Nothing on this site is medical advice. [Final legal and compliance language to come.]</p>
-    <nav aria-label="Footer"><a href="#offer">What we offer</a><a href="#" data-colleen>Wellness programs</a><a href="#goals">Goals</a><a href="#concierge">Concierge</a><a href="#apply">Book</a></nav>
+    <nav aria-label="Footer"><a href="#offer">What we offer</a><a href="#goals">Your goals</a><a href="#men-women">Men &amp; women</a><a href="#how">How it works</a><a href="#doctor">Physicians</a><a href="#concierge">Concierge</a></nav>
   </div>
 </footer>
 
@@ -772,16 +779,17 @@ document.querySelectorAll('[data-slot]').forEach(el=>{ if(el.dataset.slot!=='goa
 
 
 /* Goals: one source drives the picker, the form options and the confirmation. */
+const RX={"weight": ["GLP-1 medication (semaglutide or tirzepatide)", "Appetite and metabolic support", "Muscle-sparing protein and training plan", "Body composition labs"], "energy": ["NAD+ therapy", "Mitochondrial peptides (MOTS-c)", "B12 and metabolic support", "Sleep and recovery peptides"], "desireM": ["PT-141 (bremelanotide)", "Tadalafil, daily or as needed", "Testosterone evaluation", "Hormone and blood flow labs"], "desireW": ["PT-141 (bremelanotide)", "Hormone balancing (estradiol, testosterone)", "Oxytocin support", "Hormone panel"], "hormones": ["Bioidentical estrogen and progesterone", "Testosterone for women", "Sleep and mood support", "Full hormone panel"], "testosterone": ["Testosterone therapy (TRT)", "Enclomiphene or HCG to protect natural production", "Full hormone panel", "Ongoing level checks"], "body": ["Growth hormone peptides (sermorelin, tesamorelin)", "Recovery and repair support", "Protein and training plan", "Body composition labs"], "skin": ["GHK-Cu copper peptide", "NAD+ therapy", "Collagen and skin nutrients", "Hormone support for skin"], "longevity": ["Advanced longevity lab panel", "NAD+ therapy", "Peptides for sleep and recovery", "Personalized supplement plan"]};
 const GOALS=[
   {id:'weight',chip:'Weight',form:'Lose the weight',tag:'Weight · GLP-1',h:'Lose the weight. For good this time.',p:'Quiet the cravings and finally see the body your work deserves.',cta:'Start my weight plan',tone:'skin',brief:'Photo: lean, confident body in natural light'},
   {id:'energy',chip:'Energy',form:'My energy',tag:'Energy · Peptides',h:'Wake up wanting the day again.',p:'Real, all-day energy. Not another coffee.',cta:'Get my energy back',tone:'sunrise',brief:'Photo: early morning run, sun just up'},
   {id:'desireM',chip:'Desire (men)',form:'Drive & performance',tag:'Sexual wellness · Men',h:'Bring the fire back.',p:'Drive, stamina and confidence, handled with total discretion.',cta:'Talk to a physician privately',tone:'dusk',brief:'Photo: couple at dusk, close, intimate, tasteful'},
-  {id:'desireW',chip:'Desire (women)',form:'Desire & intimacy',tag:'Sexual wellness · Women',h:'Want it again.',p:'Desire and intimacy that feel like you.',cta:'Talk to a physician privately',tone:'dusk',brief:'Photo: woman, relaxed, sensual, golden light'},
+  {id:'desireW',chip:'Desire (women)',form:'Desire & intimacy',tag:'Sexual wellness · Women',h:'Feel the spark again.',p:'Desire, comfort and connection, on your terms.',cta:'Talk to a physician privately',tone:'dusk',brief:'Photo: woman, relaxed, sensual, golden light'},
   {id:'hormones',chip:'Hormones',form:'Balance my hormones',tag:'Hormones · Women',h:"Menopause doesn't get the final word.",p:'Sleep, mood, body and spark, back in balance.',cta:'Balance my hormones',tone:'sea',brief:'Photo: woman, 50s, swimming in clear water'},
-  {id:'testosterone',chip:'Testosterone',form:'Testosterone',tag:'Hormones · Men',h:'Feel like yourself again. Stronger.',p:'Strength, focus and presence, restored.',cta:'Check my levels',tone:'night',brief:'Photo: man, 50s, sharp, city at night'},
-  {id:'body',chip:'Muscle & body',form:'Build muscle',tag:'Body · Peptides · Growth hormone',h:'Build the body you always wanted.',p:'Lean muscle, faster recovery, and the strongest version of you yet.',cta:'Build my protocol',tone:'dusk',brief:'Photo: strength training, natural light'},
+  {id:'testosterone',chip:'Testosterone',form:'Testosterone',tag:'Hormones · Men',h:'Feel like yourself again.',p:'Your strength, focus, drive and presence, back at their best.',cta:'Check my levels',tone:'night',brief:'Photo: man, 50s, sharp, city at night'},
+  {id:'body',chip:'Muscle & body',form:'Build muscle',tag:'Body · Peptides · Growth hormone',h:'Build your best body yet.',p:'Lean muscle, faster recovery, and the strongest version of you yet.',cta:'Build my protocol',tone:'dusk',brief:'Photo: strength training, natural light'},
   {id:'skin',chip:'Skin',form:'Skin & glow',tag:'Aesthetics',h:'Look as good as you feel.',p:'Skin that looks rested, bright and alive.',cta:'Start my glow plan',tone:'skin',brief:'Photo: close-up of glowing skin in daylight'},
-  {id:'longevity',chip:'Longevity',form:'Longevity',tag:'Longevity · Labs',h:'Stay young for longer.',p:'Know your numbers, then stay sharp, strong and active for decades.',cta:'Build my longevity plan',tone:'stone',brief:'Photo: active couple hiking a coastal ridge'}
+  {id:'longevity',chip:'Longevity',form:'Longevity',tag:'Longevity · Labs',h:'Stay younger for longer.',p:'Stay sharp, strong and active for decades to come.',cta:'Build my longevity plan',tone:'stone',brief:'Photo: active couple hiking a coastal ridge'}
 ];
 
 const chips=document.getElementById('chips'),goalOpts=document.getElementById('goalOpts');
@@ -798,6 +806,7 @@ function render(g){
   document.getElementById('pickTag').textContent=g.tag;
   document.getElementById('pickH').textContent=g.h;
   document.getElementById('pickP').textContent=g.p;
+  document.getElementById('pickRx').innerHTML=(RX[g.id]||[]).map(x=>`<li>${x}</li>`).join('');
   document.getElementById('pickCta').innerHTML=`${g.cta} <span class="ar">→</span>`;
   document.getElementById('pickBrief').textContent=g.brief;
   pickPh.dataset.tone=g.tone;pickPh.dataset.goal=g.id;applyPhoto(pickPh,PHOTOS['goal_'+g.id]);
