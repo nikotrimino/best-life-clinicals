@@ -302,7 +302,21 @@ label.f input:focus,label.f select:focus{outline:none;border-color:var(--deep);b
 .navrow{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem}
 .back{background:none;border:0;font:500 .95rem var(--sans);color:var(--gray);cursor:pointer;padding:.6rem 0}
 .back:hover{color:var(--black)}
-.done h3{font-size:clamp(1.85rem,3.36vw,2.86rem);margin:.8rem 0 1rem}
+.done-top{display:flex;align-items:center;gap:1.1rem}
+.done .check{flex:none;width:64px;height:64px;border-radius:50%;background:var(--deep);color:var(--white);display:grid;place-items:center}
+.done .check svg{width:30px;height:30px}
+.done .label{color:var(--sun)}
+.done h3{font-size:clamp(2.2rem,3.6vw,3.2rem);margin:.3rem 0 0}
+.done #done-p{font-size:1.15rem;margin-top:1.6rem;color:var(--black)}
+.done .next{list-style:none;margin:1.2rem 0 0;padding:0;display:grid;gap:.6rem}
+.done .next li{display:flex;gap:1rem;align-items:flex-start;background:var(--soft);border-radius:16px;padding:1.1rem 1.2rem}
+.done .next i{flex:none;font-style:normal;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--deep);color:var(--deep);display:grid;place-items:center;font-weight:600;font-size:.9rem}
+.done .next b{display:block;font-size:1.08rem;font-weight:600}
+.done .next span{display:block;color:var(--gray);font-size:.95rem;margin-top:.2rem}
+.done .echo-wrap{margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--line)}
+.done .echo-wrap p{font-size:.85rem;font-weight:500;color:var(--gray)}
+.done .goals-echo{margin-top:.6rem!important}
+.done .goals-echo span{background:var(--deep)!important;color:var(--white)}
 .done p{color:var(--gray);max-width:44ch}
 .done .goals-echo{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem}
 .done .goals-echo span{font-size:.88rem;background:var(--soft);border-radius:999px;padding:.4rem .8rem}
@@ -325,14 +339,39 @@ label.f input:focus,label.f select:focus{outline:none;border-color:var(--deep);b
 .close .shade{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.42)}
 .close .wrap{position:relative;z-index:2;width:100%}
 .close h2{font-size:clamp(2.52rem,7.06vw,6.72rem);max-width:12ch;margin:0 auto}
-.join{padding-block:clamp(3.2rem,7vw,6rem);background:var(--soft)}
-.join-in{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2rem,5vw,5rem);align-items:start}
-.join h2{font-size:clamp(2.3rem,3.9vw,3.7rem);margin-top:.7rem}
-.join-in>div>p:not(.label){font-size:1.15rem;color:var(--gray);margin-top:1.1rem;max-width:34ch;line-height:1.45}
-.join label.f input{background:var(--white)}
-.join .btn{margin-top:1.4rem}
-.join-ok{margin-top:1rem;font-weight:500;color:var(--deep)}
-@media(max-width:860px){.join-in{grid-template-columns:1fr}}
+.join{padding-block:clamp(3.2rem,7vw,6rem)}
+.join-card{background:var(--deep);color:var(--white);border-radius:28px;padding:clamp(1.6rem,4.5vw,4rem);display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.join-copy .label{color:var(--sun)}
+.join-copy h2{font-size:clamp(2.6rem,4.6vw,4.4rem);margin-top:.7rem}
+.join-copy .lede{font-size:clamp(1.15rem,1.5vw,1.35rem);color:rgba(255,255,255,.8);margin-top:1rem;max-width:30ch;line-height:1.4}
+.join-perks{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:1.1rem}
+.join-perks li{display:flex;gap:1rem;align-items:center;color:rgba(255,255,255,.72);font-size:.98rem;line-height:1.35}
+.join-perks span{flex:none;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);display:grid;place-items:center;color:var(--sun)}
+.join-perks svg{width:21px;height:21px}
+.join-perks b{display:block;color:var(--white);font-size:1.1rem;font-weight:600}
+.join-form{background:var(--white);color:var(--black);border-radius:22px;padding:clamp(1.4rem,3vw,2.2rem)}
+.join-form .fields{grid-template-columns:1fr 1fr}
+.join-form .f.full{grid-column:1/-1}
+.join-form label.f{font-size:0}
+.join-form label.f input{font-size:1rem}
+.jhow{font-size:.9rem;font-weight:500;margin-top:1.2rem}
+.jchips{display:flex;gap:.5rem;margin-top:.6rem}
+.jchips label{cursor:pointer}
+.jchips input{position:absolute;opacity:0;pointer-events:none}
+.jchips span{display:inline-flex;align-items:center;gap:.45rem;border:1.5px solid var(--line);border-radius:999px;padding:.6rem 1.1rem;font-weight:500;font-size:.95rem;transition:all .2s}
+.jchips span::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gray)}
+.jchips input:checked+span{background:var(--deep);border-color:var(--deep);color:var(--white)}
+.jchips input:checked+span::before{background:var(--sun);border-color:var(--sun)}
+.jchips input:focus-visible+span{outline:2px solid var(--sun);outline-offset:2px}
+.join-form .err{margin-top:.6rem;min-height:1.2em}
+.join-form .btn{width:100%;justify-content:center;margin-top:.2rem}
+.jlegal{font-size:.74rem;color:var(--gray);line-height:1.45;margin-top:.9rem}
+.join-ok{text-align:center;padding:2rem 0}
+.join-ok .check{width:64px;height:64px;border-radius:50%;background:var(--deep);color:var(--white);display:inline-grid;place-items:center}
+.join-ok .check svg{width:30px;height:30px}
+.join-ok h3{font-size:2rem;margin-top:1rem}
+.join-ok p{color:var(--gray);margin-top:.5rem}
+@media(max-width:860px){.join-card{grid-template-columns:1fr}}
 .close p{margin:1.6rem auto 2.2rem;font-size:clamp(1.35rem,1.9vw,1.7rem);color:rgba(255,255,255,.85)}
 footer{padding-block:2.6rem 6rem;font-size:.85rem;color:var(--gray)}
 footer .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:start}
@@ -681,10 +720,17 @@ footer nav a{text-decoration:none;white-space:nowrap}
         </fieldset>
 
         <div class="done" id="done" hidden>
-          <p class="label" id="done-tag">You're in</p>
-          <h3 id="done-h"></h3>
-          <p id="done-p"></p>
-          <div class="goals-echo" id="echo"></div>
+          <div class="done-top">
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+            <div><p class="label" id="done-tag">Received</p><h3 id="done-h"></h3></div>
+          </div>
+          <p id="done-p">Your answers are in. Here's what happens next.</p>
+          <ol class="next">
+            <li><i>1</i><div><b>A physician reviews your answers</b><span>Personally. Not a bot, not a call center.</span></div></li>
+            <li><i>2</i><div><b>We reach out within one business day</b><span>By email or text, whichever you prefer.</span></div></li>
+            <li><i>3</i><div><b>Your private consultation</b><span>One-on-one, about your goals and the plan to get there.</span></div></li>
+          </ol>
+          <div class="echo-wrap"><p>Your goals</p><div class="goals-echo" id="echo"></div></div>
         </div>
 
         <p class="err" id="err" role="alert"></p>
@@ -719,25 +765,42 @@ footer nav a{text-decoration:none;white-space:nowrap}
   </section>
 
   <section class="join" id="join">
-    <div class="wrap join-in">
-      <div>
-        <p class="label" style="color:var(--sun)">Stay in the loop</p>
-        <h2>Be first to know.</h2>
-        <p>New protocols, member-only offers and straight answers from our physicians. Never spam, never shared.</p>
-      </div>
-      <form id="joinForm" novalidate>
-        <div class="fields">
-          <label class="f">First name<input id="jn" autocomplete="given-name"></label>
-          <label class="f">Last name<input id="jl" autocomplete="family-name"></label>
-          <label class="f">Email<input id="je" type="email" autocomplete="email"></label>
-          <label class="f">Mobile<input id="jp" type="tel" autocomplete="tel"></label>
+    <div class="wrap">
+      <div class="join-card">
+        <div class="join-copy">
+          <p class="label">The Best Life list</p>
+          <h2>Be first to know.</h2>
+          <p class="lede">The inside track on getting your best life back.</p>
+          <ul class="join-perks">
+            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg></span><div><b>New protocols first</b>Before they're public.</div></li>
+            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></span><div><b>Member-only offers</b>Pricing you won't see anywhere else.</div></li>
+            <li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><div><b>Straight answers</b>From our physicians, in plain English.</div></li>
+          </ul>
         </div>
-        <label class="consent"><input type="checkbox" id="jem" checked> Send me emails from Best Life Clinicals.</label>
-        <label class="consent" style="margin-top:.6rem"><input type="checkbox" id="jsms"> Send me texts. By checking this you agree to receive recurring marketing texts from Best Life Clinicals at the number above. Consent isn't required to buy. Msg and data rates may apply. Reply STOP to opt out.</label>
-        <p class="err" id="jerr" role="alert"></p>
-        <button type="submit" class="btn" id="jbtn">Join the list <span class="ar">→</span></button>
-        <p class="join-ok" id="jok" hidden>You're on the list. Welcome.</p>
-      </form>
+        <form class="join-form" id="joinForm" novalidate>
+          <div id="jfields">
+            <div class="fields">
+              <label class="f">First name<input id="jn" autocomplete="given-name" placeholder="First name"></label>
+              <label class="f">Last name<input id="jl" autocomplete="family-name" placeholder="Last name"></label>
+              <label class="f full">Email<input id="je" type="email" autocomplete="email" placeholder="you@email.com"></label>
+              <label class="f full">Mobile<input id="jp" type="tel" autocomplete="tel" placeholder="(555) 555-5555"></label>
+            </div>
+            <p class="jhow">How should we reach you?</p>
+            <div class="jchips">
+              <label><input type="checkbox" id="jem" checked><span>Email</span></label>
+              <label><input type="checkbox" id="jsms"><span>Texts</span></label>
+            </div>
+            <p class="err" id="jerr" role="alert"></p>
+            <button type="submit" class="btn" id="jbtn">Join the list <span class="ar">→</span></button>
+            <p class="jlegal">By choosing Texts, you agree to receive recurring marketing texts from Best Life Clinicals at the number above. Consent isn't required to buy. Msg and data rates may apply. Reply STOP to opt out. Never spam, never shared.</p>
+          </div>
+          <div class="join-ok" id="jok" hidden>
+            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+            <h3>You're on the list.</h3>
+            <p>Welcome to Best Life. Keep an eye on your inbox.</p>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </main>
@@ -915,7 +978,7 @@ function finish(){
   document.getElementById('echo').innerHTML=chosen().map(x=>`<span>${x}</span>`).join('');
   document.getElementById('done-tag').textContent=tier==='concierge'?'Received · Concierge':'Received';
   document.getElementById('done-h').textContent=`Thank you, ${name}.`;
-  document.getElementById('done-p').textContent='A licensed physician is reviewing your answers personally. If you\u2019re a fit, one of our physicians will reach out by email or text within one business day to set up your private consultation. Your goals:';
+  document.querySelector('#app .prog').hidden=true;document.getElementById('stepn').hidden=true;
   document.getElementById('done').hidden=false;
 }
 show();
@@ -924,6 +987,6 @@ document.getElementById('joinForm').addEventListener('submit',e=>{
   if(!g('jn'))return je.textContent='Add your first name.';
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('je')))return je.textContent='Add a valid email.';
   if(document.getElementById('jsms').checked&&g('jp').replace(/\D/g,'').length<10)return je.textContent='Add a mobile number with area code for texts.';
-  je.textContent='';document.getElementById('jbtn').hidden=true;document.getElementById('jok').hidden=false;
+  je.textContent='';document.getElementById('jfields').hidden=true;document.getElementById('jok').hidden=false;
 });
 </script>
